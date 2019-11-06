@@ -1,0 +1,34 @@
+<!-- Balise meta -->
+<meta charset="{{ES.charset}}">
+<link rel="canonical" href="{{ES.url.host}}/{{ES.url.path}}" />
+
+{% if ES.meta %}
+    <title>{{ES.meta.title}}</title>
+    {% for m_name, m_content in ES.meta %}
+        <meta name="{{m_name}}" content="{{m_content}}">
+    {% endfor %}
+{% endif %}
+
+<!-- Custom CSS -->
+{% if ES.stylesheet %}
+    {% for s_file in ES.stylesheet %}
+        <link rel="stylesheet" href="assets/css/{{s_file}}.css" />
+    {% endfor %}
+{% endif %}
+
+<!-- Font Awesome -->
+<script src="https://kit.fontawesome.com/c4c899c4b5.js"></script>
+
+<!-- UIkit JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.2/js/uikit-icons.min.js"></script>
+
+<!-- Vue JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+
+<!-- Custom JS -->
+{% if ES.script %}
+    {% for s_file in ES.script %}
+        <script src="assets/js/{{s_file}}.js"></script>
+    {% endfor %}
+{% endif %}

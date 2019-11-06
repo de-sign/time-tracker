@@ -1,0 +1,16 @@
+{
+    "doctype": "html",
+    "lang": "fr",
+    "charset": "UTF8",
+    "url": {
+        "host": "./",
+        "path": ""
+    },
+	"meta": {
+		"title": "UIKit Starter",
+		"description": "Simple uikit website starter pack",
+		"viewport": "width=device-width, initial-scale=1.0"
+    },
+    "stylesheet": [],
+    "script": []
+}

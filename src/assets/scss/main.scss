@@ -1,0 +1,18 @@
+/* https://sass-guidelin.es/fr/#architecture */
+
+/* abstracts */
+@import
+	'abstracts/variables',
+	'node_modules/uikit/src/scss/variables',
+	'node_modules/uikit/src/scss/mixins',
+	'abstracts/mixins';
+
+/* vendors */
+@import
+	'node_modules/uikit/src/scss/uikit';
+
+/* base */
+@import
+	'base/typography';
+
+/* components */

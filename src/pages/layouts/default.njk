@@ -1,0 +1,31 @@
+
+<!doctype {{ES.doctype}}>
+<html lang="{{ES.lang}}">
+	<head>
+		{% include "layouts/_head.njk" %}
+	</head>
+	<body class="ES-layout-main ES-loading">
+
+		<div class="ES-loader uk-position-cover uk-background-muted uk-flex uk-flex-center uk-flex-middle">
+			<h1 class="uk-heading-xlarge uk-text-primary uk-margin-remove">{{ES.meta.title}}</h1>
+		</div>
+
+		<div class="ES-wrap uk-flex uk-flex-column">
+			<section class="ES-navbar ES-app-drag uk-navbar-container" uk-navbar>
+				<div class="uk-navbar-left">
+					<div class="uk-padding-small uk-text-primary">
+						{{ES.meta.title}}
+					</div>
+				</div>
+				<div class="uk-navbar-right">
+					<window-control></window-control>
+				</div>
+			</section>
+
+			<section class="ES-content">
+				{% block content %}{% endblock %}
+			</section>
+		</div>
+		
+	</body>
+</html>

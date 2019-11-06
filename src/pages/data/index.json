@@ -1,0 +1,11 @@
+{
+    "url": {
+        "path": "index.html"
+    },
+	"meta": {
+		"title": "Electron Starter",
+		"description": "Hello World !"
+    },
+    "stylesheet": ["main","index"],
+    "script": ["index"]
+}

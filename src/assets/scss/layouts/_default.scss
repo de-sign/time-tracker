@@ -1,0 +1,45 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* APP */
+.ES-app-drag {
+    -webkit-app-region: drag;
+}
+
+.ES-app-no-drag {
+    -webkit-app-region: no-drag;
+}
+
+/* Loading */
+.ES-loader {
+    transition: opacity 1s ease, z-index 1.5s ease;
+    z-index: -500;
+    opacity: 0;
+}
+
+.ES-loading .ES-loader {
+    z-index: 1000;
+    opacity: 1;
+}
+
+/* Wrap */
+.ES-wrap {
+    height: 100%;
+    overflow: hidden;
+}
+
+.ES-wrap > :first-child {
+    flex: 0 0 auto;
+}
+
+.ES-wrap > :last-child {
+    flex: 1 1 100%;
+    overflow: auto;
+}
+
+/* Navbar */
+.ES-navbar .uk-navbar-item {
+    min-height: auto;
+}

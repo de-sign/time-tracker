@@ -30,7 +30,7 @@ module.exports = {
     },
     
     template: `
-        <ul class="ES-app-no-drag uk-padding-small uk-iconnav">
+        <ul class="v-windowControl uk-padding-small uk-iconnav">
             <li v-for="oControl in aVisibleControl">
                 <a href="#" :uk-icon="oControl.sIcon" @click="use(oControl.sAction)"></a>
             </li>

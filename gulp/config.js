@@ -63,9 +63,6 @@ Object.assign(exports, {
             js: '**/*.js',
             images: '**/*.*',
             fonts: '**/*.*'
-        },
-        dest: {
-            scss: 'main.css'
         }
     },
 

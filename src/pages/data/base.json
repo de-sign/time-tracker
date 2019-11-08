@@ -7,8 +7,8 @@
         "path": ""
     },
 	"meta": {
-		"title": "UIKit Starter",
-		"description": "Simple uikit website starter pack",
+		"title": "Time Tracker",
+		"description": "Permet de consigner et visualiser le temps passé sur vos projets",
 		"viewport": "width=device-width, initial-scale=1.0"
     },
     "stylesheet": [],

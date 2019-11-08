@@ -7,18 +7,27 @@
 	<body class="ES-layout-main ES-loading">
 
 		<div class="ES-loader uk-position-cover uk-background-muted uk-flex uk-flex-center uk-flex-middle">
-			<h1 class="uk-heading-xlarge uk-text-primary uk-margin-remove">{{ES.meta.title}}</h1>
+			{% block loader %}
+				<h1 class="uk-heading-xlarge uk-text-primary uk-margin-remove">{{ES.meta.title}}</h1>
+			{% endblock %}
 		</div>
 
 		<div class="ES-wrap uk-flex uk-flex-column">
 			<section class="ES-navbar ES-app-drag uk-navbar-container" uk-navbar>
-				<div class="uk-navbar-left">
-					<div class="uk-padding-small uk-text-primary">
-						{{ES.meta.title}}
-					</div>
+				<div class="ES-app-no-drag uk-navbar-left">
+					{% block navbar_left %}
+						<div class="uk-padding-small uk-text-primary">
+							{{ES.meta.title}}
+						</div>
+					{% endblock %}
 				</div>
-				<div class="uk-navbar-right">
-					<window-control></window-control>
+				<div class="ES-app-no-drag uk-navbar-center">
+					{% block navbar_center %}{% endblock %}
+				</div>
+				<div class="ES-app-no-drag uk-navbar-right">
+					{% block navbar_right %}
+						<window-control></window-control>
+					{% endblock %}
 				</div>
 			</section>
 

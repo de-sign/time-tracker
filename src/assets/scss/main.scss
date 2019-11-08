@@ -3,13 +3,13 @@
 /* abstracts */
 @import
 	'abstracts/variables',
-	'node_modules/uikit/src/scss/variables',
-	'node_modules/uikit/src/scss/mixins',
+	'node_modules/uikit/src/scss/variables-theme',
+	'node_modules/uikit/src/scss/mixins-theme',
 	'abstracts/mixins';
 
 /* vendors */
 @import
-	'node_modules/uikit/src/scss/uikit';
+	'node_modules/uikit/src/scss/uikit-theme';
 
 /* base */
 @import

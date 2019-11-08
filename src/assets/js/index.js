@@ -11,14 +11,43 @@ ES.initialize().then( () => {
         el: '.ES-wrap',
         
         components: {
+            'task-control': require('./components/TaskControl'),
+            'task-list': require('./components/TaskList'),
             'window-control': require('./components/WindowControl')
         },
         
-        data: {},
+        data: {
+            dDate: new Date(),
+            oDefTask: {
+                1: 'Tâche de test',
+                2: 'Achat de tâche',
+                3: 'Nettoyer une tâche'
+            }
+        },
         
         mounted() {
-            this.$nextTick( () => document.body.classList.remove('ES-loading') );
+            this.addEventListener();
+            setTimeout( () => document.body.classList.remove('ES-loading'), 1000 );
         },
-        methods: {}
+        methods: {
+            addEventListener() {
+                this.$on('task-control-date-picker--prev', () => this.setDate(-1) );
+                this.$on('task-control-date-picker--next', () => this.setDate(1) );
+                this.$on('task-control-button--add-def-task', sName => this.addDefTask(sName) );
+            },
+
+            setDate(nDayModify) {
+                this.dDate.setDate( this.dDate.getDate() + nDayModify );
+                this.dDate = new Date(this.dDate.getTime());
+            },
+
+            addDefTask(sName) {
+                const nId = Math.max.apply( Math, Object.keys(this.oDefTask) ) + 1,
+                    oDefTask = Object.assign({}, this.oDefTask);
+    
+                oDefTask[nId] = sName;
+                this.oDefTask = oDefTask;
+            }
+        }
     } );
 } );

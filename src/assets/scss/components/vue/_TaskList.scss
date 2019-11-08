@@ -1,0 +1,19 @@
+.v-taskList {
+
+    &Column {
+
+        display: inline-block;
+        vertical-align: top;
+        width: $width-small-width;
+        
+        &__row {
+            box-sizing: border-box;
+            height: $height-small-height;
+            border-top: 1px solid $global-border;
+
+            &:last-child {
+                height: auto;
+            }
+        }
+    }
+}

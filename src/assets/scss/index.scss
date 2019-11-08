@@ -1,3 +1,33 @@
+/* abstracts */
+@import
+	'abstracts/variables',
+	'node_modules/uikit/src/scss/variables-theme';
+
 /* layout */
 @import
 	'layouts/default';
+
+/* components */
+@import
+	'components/vue/TaskControl',
+	'components/vue/TaskControlDatePicker',
+	'components/vue/TaskList',
+	'components/vue/TaskControlButton',
+	'components/vue/TaskListHeader',
+	'components/vue/TaskListItem',
+	'components/vue/TaskListItemPart';
+
+/* pages */	
+.ES-content > .uk-flex {
+    height: 100%;
+    overflow: hidden;
+}
+
+.ES-content > .uk-flex > :first-child {
+    flex: 0 0 auto;
+}
+
+.ES-content > .uk-flex > :last-child {
+    flex: 1 1 100%;
+    overflow: auto;
+}

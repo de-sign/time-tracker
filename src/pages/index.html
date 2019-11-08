@@ -1,11 +1,22 @@
 <!-- Extension du Layout --> 
 {% extends 'layouts/default.njk' %}
+{% block loader %}
+    <h1 class="uk-heading-xlarge uk-text-primary uk-margin-remove">
+        <span class="uk-margin-right" uk-icon="icon: history; ratio: 3.8"></span>
+        {{ES.meta.title}}
+    </h1>
+{% endblock %}
+
+{% block navbar_left %}
+    <div class="uk-padding-small uk-text-primary">
+        <span class="uk-margin-small-right" uk-icon="history"></span>
+        {{ES.meta.title}}
+    </div>
+{% endblock %}
 
 {% block content %}
-    <main class="uk-section">
-        <div class="uk-container">
-            <h2 class="uk-heading-large"> Hello World !</h2>
-            <p>Welcome to Electron Starter</p>
-        </div>
-    </main>
+    <div class="uk-flex uk-flex-column">
+        <task-control :d-date="dDate" :o-def-task="oDefTask"></task-control>
+        <task-list :d-date="dDate" :o-def-task="oDefTask"></task-list>
+    </div>
 {% endblock %}

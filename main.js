@@ -13,6 +13,7 @@ ES.initialize( {
         width: 800,
         height: 600,
         minWidth: 400,
+        maxWidth: 980,
         center: true,
         frame: false,
         show: false,

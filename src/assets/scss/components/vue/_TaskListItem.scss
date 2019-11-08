@@ -1,0 +1,16 @@
+.v-taskListItem {
+
+    &__header {
+        position: sticky;
+        top: 0;
+        z-index: 90;
+
+        & h5 {
+            line-height: inherit;
+        }
+    }
+
+    &:last-child {
+        display: none;
+    }
+}

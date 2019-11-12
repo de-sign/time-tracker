@@ -1,8 +1,7 @@
 <!-- Extension du Layout --> 
 {% extends 'layouts/default.njk' %}
 {% block loader %}
-    <h1 class="uk-heading-xlarge uk-text-primary uk-margin-remove">
-        <span class="uk-margin-right" uk-icon="icon: history; ratio: 3.8"></span>
+    <h1 class="uk-heading-medium uk-text-primary uk-margin-remove">
         {{ES.meta.title}}
     </h1>
 {% endblock %}
@@ -19,4 +18,5 @@
         <task-control :d-date="dDate" :o-def-task="oDefTask"></task-control>
         <task-list :d-date="dDate" :o-def-task="oDefTask"></task-list>
     </div>
+    <task-modal></task-modal>
 {% endblock %}

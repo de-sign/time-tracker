@@ -24,7 +24,7 @@ module.exports = {
         }
     },
 
-    created() {
+    mounted() {
         this.$root.$on('task-control-button--add-task', nId => this.addTask(nId));
     },
     watch: {
@@ -54,10 +54,12 @@ module.exports = {
                     v-for="oTask in aTask"
                     :key="oTask.nId"
 
-                    :n-id="oTask.nId"
-                    :s-name="oTask.sName"
                     :n-hour-start="nHourStart"
                     :n-hours-elapsed="nHoursElapsed"
+                    :d-date="dDate"
+                    
+                    :n-id="oTask.nId"
+                    :s-name="oTask.sName"
                 ></task-list-item> 
             </div>
         </main>

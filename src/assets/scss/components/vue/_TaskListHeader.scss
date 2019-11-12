@@ -3,7 +3,7 @@
     position: sticky;
     left: 0;
     z-index: 100;
-    width: auto;
+    width: $global-gutter * 2;
     color: transparent;
 
     & > * {

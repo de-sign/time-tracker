@@ -25,18 +25,20 @@ module.exports = {
 
     methods: {
         resetSearch() {
-            // setTimeout( () => this.sSearch = '', 800 );
+            setTimeout( () => this.sSearch = '', 800 );
         },
 
-        action(sAction, ...aArgs) {
-            aArgs.unshift('task-control-button--' + sAction);
-            this.$root.$emit.apply(this.$root, aArgs);
+        action(sAction, uArgs) {
+            this.$root.$emit('task-control-button--' + sAction, uArgs);
         }
     },
     
     template: `
-        <div class="v-taskControlButton uk-inline uk-width-medium uk-text-right">
-            <button class="uk-button uk-button-default">Ajouter une tâche</button>
+        <div class="v-taskControlButton uk-inline uk-text-right">
+            <button class="uk-button uk-button-default">
+                Ajouter
+                <span class="uk-visible@s">une tâche</span>
+            </button>
             <div class="uk-text-left" uk-dropdown="pos: bottom-right">
                 <div class="uk-inline uk-margin-bottom">
                     <span class="uk-form-icon" uk-icon="icon: search"></span>

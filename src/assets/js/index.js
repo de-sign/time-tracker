@@ -13,6 +13,7 @@ ES.initialize().then( () => {
         components: {
             'task-control': require('./components/TaskControl'),
             'task-list': require('./components/TaskList'),
+            'task-modal': require('./components/TaskModal'),
             'window-control': require('./components/WindowControl')
         },
         
@@ -27,7 +28,7 @@ ES.initialize().then( () => {
         
         mounted() {
             this.addEventListener();
-            setTimeout( () => document.body.classList.remove('ES-loading'), 1000 );
+            setTimeout( () => document.body.classList.remove('ES-loading'), 800 );
         },
         methods: {
             addEventListener() {
@@ -47,6 +48,10 @@ ES.initialize().then( () => {
     
                 oDefTask[nId] = sName;
                 this.oDefTask = oDefTask;
+            },
+
+            editChrono(oChrono) {
+                console.log('Open Modal Chrono', oChrono);
             }
         }
     } );

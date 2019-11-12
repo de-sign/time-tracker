@@ -15,14 +15,14 @@ module.exports = {
     template: `
         <header class="v-task-control uk-section uk-section-small">
             <div class="uk-container uk-container-small">
-                <nav uk-navbar>
-                    <div class="uk-navbar-left">
+                <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-width-expand">
                         <task-control-date-picker :d-date="dDate"></task-control-date-picker>
                     </div>
-                    <div class="uk-navbar-right">
+                    <div class="uk-width-auto">
                         <task-control-button :o-def-task="oDefTask"></task-control-button>
                     </div>
-                </nav>
+                </div>
             </div>
         </header>
     `

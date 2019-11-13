@@ -12,8 +12,8 @@ ES.initialize( {
     oWindowOptions: {
         width: 800,
         height: 600,
-        minWidth: 400,
-        maxWidth: 980,
+        minWidth: 500,
+        minHeight: 600,
         center: true,
         frame: false,
         show: false,

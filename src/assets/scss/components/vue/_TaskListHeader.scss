@@ -2,7 +2,7 @@
 
     position: sticky;
     left: 0;
-    z-index: 100;
+    z-index: $global-z-index;
     width: $global-gutter * 2;
     color: transparent;
 
@@ -12,6 +12,6 @@
 
     &__hour {
         transform: translate(0, -50%);
-        z-index: 100;
+        z-index: $global-z-index;
     }
 }

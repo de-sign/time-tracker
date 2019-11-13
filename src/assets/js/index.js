@@ -20,9 +20,7 @@ ES.initialize().then( () => {
         data: {
             dDate: new Date(),
             oDefTask: {
-                1: 'Tâche de test',
-                2: 'Achat de tâche',
-                3: 'Nettoyer une tâche'
+                1: 'Pause'
             }
         },
         

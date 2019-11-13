@@ -12,7 +12,7 @@ module.exports = {
             sDescription: '',
             sTimeStart: this.dDateInit.getHours().toString().padStart(2, '0') + ':' + this.dDateInit.getMinutes().toString().padStart(2, '0'),
             sTimeEnd: ( this.dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + this.dDateInit.getMinutes().toString().padStart(2, '0'),
-            isRunning: false
+            bIsRunning: false
         };
     },
     computed: {
@@ -40,15 +40,26 @@ module.exports = {
         },
 
         oPosition() {
+            const nDateStart = this.dDateStart.getHours() + this.dDateStart.getMinutes() / 60,
+                nCoefTop = nDateStart - this.nHourStartRef;
             return {
-                top: (150 * (this.dDateStart.getHours() - this.nHourStartRef) + 5) + 'px',
+                top: (150 * nCoefTop + 5) + 'px',
                 height: (150 * this.nHoursElapsed - 9) + 'px',
                 left: '5px',
-                right: '5px'
+                right: '5px',
+                zIndex: ( 15 * nCoefTop + 800 )
             };
+        },
+
+        sTitle() {
+            const sTitle = `<b>${this.sName}</b><br/>Début - ${this.sTimeStart}<br/> Fin - ${this.sTimeEnd}`;
+            return sTitle.replace(/:/g, 'h');
         }
     },
 
+    mounted() {
+        this.$on('task-list-item--update', () => this.update());
+    },
     methods: {
         edit() {
             this.$root.$emit('task-list-item-chrono--edit', this);
@@ -58,7 +69,25 @@ module.exports = {
             this.sName = oValues.sName;
             this.sDescription = oValues.sDescription;
             this.sTimeStart = oValues.sTimeStart;
-            this.sTimeEnd = oValues.sTimeEnd;
+            this.bIsRunning = oValues.bIsRunning;
+            this.setTimeEnd(oValues.sTimeEnd);
+        },
+
+        setTimeEnd(sTimeEnd) {
+            if( this.bIsRunning ){
+                const dNow = new Date();
+                this.sTimeEnd = dNow.getHours().toString().padStart(2, '0') + ':' + dNow.getMinutes().toString().padStart(2, '0');
+            } else {
+                this.sTimeEnd = sTimeEnd;
+            }
+        },
+
+        update() {
+            this.setTimeEnd(this.sTimeEnd);
+        },
+
+        remove() {
+            this.$parent.$emit('task-list-item-chrono--remove', this.nId);
         }
     },
     
@@ -66,8 +95,9 @@ module.exports = {
         <article
             :style="oPosition"
             @dblclick="edit"
-            :class="{ '--isRunning': isRunning }"
+            :class="{ '--isRunning': bIsRunning }"
             class="v-taskListItemChrono uk-position-absolute uk-tile uk-padding-small"
+            :uk-tooltip="'pos: right; title: ' + sTitle"
         >
             <header>
                 <h3 class="uk-h5 uk-margin-remove">{{sName}}</h3>

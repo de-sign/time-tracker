@@ -15,12 +15,12 @@ html, body {
 /* Loading */
 .ES-loader {
     transition: opacity 1s ease, z-index 1.5s ease;
-    z-index: -500;
+    z-index: -$global-z-index;
     opacity: 0;
 }
 
 .ES-loading .ES-loader {
-    z-index: 1000;
+    z-index: $global-z-index * 2;
     opacity: 1;
 }
 
@@ -40,6 +40,10 @@ html, body {
 }
 
 /* Navbar */
+.ES-navbar {
+    z-index: $global-z-index + 100;
+}
+
 .ES-navbar .uk-navbar-item {
     min-height: auto;
 }

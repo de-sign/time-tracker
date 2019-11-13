@@ -1,0 +1,3 @@
+@mixin hook-button-danger(){ border: $button-border-width solid $button-danger-color; }
+@mixin hook-button-danger-hover(){ border-color: $button-danger-hover-color; }
+@mixin hook-button-danger-active(){ border-color: $button-danger-active-color; }

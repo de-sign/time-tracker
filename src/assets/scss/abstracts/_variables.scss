@@ -1,1 +1,7 @@
+$global-danger-background : #f0506e;
+$button-danger-background: transparent;
+$button-danger-color: $global-danger-background;
+$button-danger-hover-color: darken($button-danger-color, 20%);
+$button-danger-active-color: darken($button-danger-color, 30%);
+
 $dropdown-min-width: 250px;

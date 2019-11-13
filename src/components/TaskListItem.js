@@ -29,8 +29,12 @@ module.exports = {
         }
     },
 
+    mounted() {
+        this.$on('task-list-item-chrono--remove', nId => this.remove(nId));
+        this.$nextTick( () => this.update() );
+    },
     methods: {
-        addChrono(nHour) {
+        add(nHour) {
             const dDate = new Date( this.dDate.getTime() );
             dDate.setHours(nHour);
             dDate.setMinutes(0);
@@ -39,6 +43,21 @@ module.exports = {
                 nId: ++nUIdChrono,
                 dDateInit: dDate
             } );
+        },
+
+        remove(nId) {
+            let nIndex = 0;
+            for ( ; nIndex < this.aChrono.length; nIndex++) {
+                if( this.aChrono[nIndex].nId == nId ){
+                    this.aChrono.splice(nIndex, 1);
+                    break;
+                }
+            }
+        },
+
+        update() {
+            this.$children.map( oChild => oChild.$emit('task-list-item--update') );
+            setTimeout( () => this.update(), 120000 );
         }
     },
     
@@ -50,7 +69,7 @@ module.exports = {
             <div class="v-taskListItem__content uk-position-relative">
                 <div class="v-taskListItem__listHour">
                     <div v-for="nHour in aHour" class="v-taskListColumn__row uk-position-relative uk-padding-small uk-transition-toggle">
-                        <a @click="addChrono(nHour)" href="#" class="v-taskListItem__addChrono uk-transition-fade uk-overlay-default uk-position-cover">
+                        <a @click="add(nHour)" href="#" class="v-taskListItem__add uk-transition-fade uk-overlay-default uk-position-cover">
                             <span class="uk-position-center">
                                 <span uk-icon="plus"></span>
                             </span>

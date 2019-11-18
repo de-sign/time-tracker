@@ -1,4 +1,6 @@
-let nUIdTask = 0;
+function APP_getStringDate(dDate) {
+    return dDate.getFullYear() + '-' + dDate.getMonth().toString().padStart(2, '0') + '-' + dDate.getDate().toString().padStart(2, '0');
+}
 
 module.exports = {
 
@@ -9,13 +11,13 @@ module.exports = {
 
     props: {
         dDate: Date,
-        oDefTask: Object
+        oTaskDef: Object
     },
     data() {
         return {
             nHourStart: 8,
             nHourEnd: 17,
-            aTask: []
+            oTask: ES.store.task.get(`oData.${APP_getStringDate(this.dDate)}`)
         };
     },
     computed: {
@@ -25,20 +27,52 @@ module.exports = {
     },
 
     mounted() {
-        this.$root.$on('task-control-button--add-task', nId => this.addTask(nId));
+        this.$root.$on('task-control-button--add-task', nId => this.add(nId));
+        this.$on('task-list-item--remove', nId => this.remove(nId));
     },
     watch: {
         dDate(dNewDate, dOldDate) {
-            this.aTask = [];
+            this.oTask = ES.store.task.get(`oData.${APP_getStringDate(dNewDate)}`);
         }
     },
     methods: {
-        addTask(nId) {
-            this.aTask.push( {
-                nId: ++nUIdTask,
-                nIdDeftask: nId,
-                sName: this.oDefTask[nId]
+        add(nIdDefTask) {
+            const nId = ES.store.task.get('nAutoIncrement'),
+                oTask = Object.assign({}, this.oTask);
+
+            oTask[nId] = {
+                nId: nId,
+                nIdDefTask: nIdDefTask,
+                sName: this.oTaskDef[nIdDefTask].sName,
+                sDate: this.dDate.toISOString()
+            };
+            this.oTask = oTask;
+
+            ES.store.task.set( {
+                nAutoIncrement: nId + 1,
+                oData: Object.assign(
+                    ES.store.task.get('oData'), {
+                        [APP_getStringDate(this.dDate)]: this.oTask
+                    }
+                )
             } );
+        },
+
+        remove(nId) {
+            const oTask = Object.assign({}, this.oTask),
+                oData = ES.store.chrono.get('oData');
+
+            delete oTask[nId];
+            delete oData[nId];
+            this.oTask = oTask;
+
+            ES.store.task.set('oData', Object.assign(
+                ES.store.task.get('oData'), {
+                    [APP_getStringDate(this.dDate)]: this.oTask
+                }
+            ) );
+
+            ES.store.chrono.set('oData', oData);
         }
     },
     
@@ -51,15 +85,15 @@ module.exports = {
                 ></task-list-header><!--
 
                 --><task-list-item
-                    v-for="oTask in aTask"
-                    :key="oTask.nId"
+                    v-for="oCurrentTask in oTask"
+                    :key="oCurrentTask.nId"
 
                     :n-hour-start="nHourStart"
                     :n-hours-elapsed="nHoursElapsed"
                     :d-date="dDate"
                     
-                    :n-id="oTask.nId"
-                    :s-name="oTask.sName"
+                    :n-id="oCurrentTask.nId"
+                    :s-name="oCurrentTask.sName"
                 ></task-list-item> 
             </div>
         </main>

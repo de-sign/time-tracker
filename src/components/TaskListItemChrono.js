@@ -4,20 +4,26 @@ module.exports = {
         nHourStartRef: Number,
 
         nId: Number,
-        dDateInit: Number
+        nIdTask: Number,
+        sDate: String
     },
     data() {
-        return {
-            sName: 'Chrono #' + this.nId,
-            sDescription: '',
-            sTimeStart: this.dDateInit.getHours().toString().padStart(2, '0') + ':' + this.dDateInit.getMinutes().toString().padStart(2, '0'),
-            sTimeEnd: ( this.dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + this.dDateInit.getMinutes().toString().padStart(2, '0'),
-            bIsRunning: false
-        };
+        const dDateInit = new Date(this.sDate),
+            oData = Object.assign(
+            {
+                sName: 'Chrono #' + this.nId,
+                sDescription: '',
+                sTimeStart: dDateInit.getHours().toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
+                sTimeEnd: ( dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
+                bIsRunning: false
+            },
+            ES.store.chrono.get(`oData.${this.nIdTask}.${this.nId}`)
+        );
+        return oData;
     },
     computed: {
         dDateStart() {
-            const dDate = new Date( this.dDateInit.getTime() ),
+            const dDate = new Date(this.sDate),
                 aTimeStart = this.sTimeStart.split(':');
 
             dDate.setHours(aTimeStart[0]);
@@ -26,7 +32,7 @@ module.exports = {
         },
 
         dDateEnd() {
-            const dDate = new Date( this.dDateInit.getTime() ),
+            const dDate = new Date(this.sDate),
                 aTimeEnd = this.sTimeEnd.split(':');
 
             dDate.setHours(aTimeEnd[0]);
@@ -42,6 +48,7 @@ module.exports = {
         oPosition() {
             const nDateStart = this.dDateStart.getHours() + this.dDateStart.getMinutes() / 60,
                 nCoefTop = nDateStart - this.nHourStartRef;
+
             return {
                 top: (150 * nCoefTop + 5) + 'px',
                 height: (150 * this.nHoursElapsed - 9) + 'px',
@@ -58,9 +65,17 @@ module.exports = {
     },
 
     mounted() {
+        this.store();
         this.$on('task-list-item--update', () => this.update());
     },
     methods: {
+
+        store() {
+            const oData = ES.store.chrono.get('oData');
+            Object.assign( oData[this.nIdTask][this.nId], this._data );
+            ES.store.chrono.set('oData', oData );
+        },
+
         edit() {
             this.$root.$emit('task-list-item-chrono--edit', this);
         },
@@ -71,6 +86,7 @@ module.exports = {
             this.sTimeStart = oValues.sTimeStart;
             this.bIsRunning = oValues.bIsRunning;
             this.setTimeEnd(oValues.sTimeEnd);
+            this.store();
         },
 
         setTimeEnd(sTimeEnd) {
@@ -84,6 +100,7 @@ module.exports = {
 
         update() {
             this.setTimeEnd(this.sTimeEnd);
+            this.store();
         },
 
         remove() {
@@ -93,11 +110,11 @@ module.exports = {
     
     template: `
         <article
-            :style="oPosition"
             @dblclick="edit"
+            :uk-tooltip="'pos: right; title: ' + sTitle"
+            :style="oPosition"
             :class="{ '--isRunning': bIsRunning }"
             class="v-taskListItemChrono uk-position-absolute uk-tile uk-padding-small"
-            :uk-tooltip="'pos: right; title: ' + sTitle"
         >
             <header>
                 <h3 class="uk-h5 uk-margin-remove">{{sName}}</h3>

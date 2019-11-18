@@ -4,22 +4,6 @@ const
         development: 'build',
         testing: 'test',
         production: 'dist'
-    },
-    ES = require(`./${out[env]}/plugins/electron-starter/_`);
-
-ES.initialize( {
-    sUrl: ES.env.root + '/index.html',
-    oWindowOptions: {
-        width: 800,
-        height: 600,
-        minWidth: 500,
-        minHeight: 600,
-        center: true,
-        frame: false,
-        show: false,
-        webPreferences: {
-            nodeIntegration: true
-        }
-    }
-} )
-.then( () => ES.windows.main.maximize() );
+    };
+    
+require(`./${out[env]}/main`);

@@ -15,8 +15,8 @@
 
 {% block content %}
     <div class="uk-flex uk-flex-column">
-        <task-control :d-date="dDate" :o-def-task="oDefTask"></task-control>
-        <task-list :d-date="dDate" :o-def-task="oDefTask"></task-list>
+        <task-control :d-date="dDate" :o-task-def="oTaskDef"></task-control>
+        <task-list :d-date="dDate" :o-task-def="oTaskDef"></task-list>
     </div>
     <task-modal></task-modal>
 {% endblock %}

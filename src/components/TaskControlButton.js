@@ -1,7 +1,7 @@
 module.exports = {
 
     props: {
-        oDefTask: Object
+        oTaskDef: Object
     },
     data() {
         return {
@@ -10,8 +10,8 @@ module.exports = {
     },
     computed: {
         aSortedDefTask() {
-            return Object.entries(this.oDefTask)
-                .map( aA => { return { nId: aA[0], sName: aA[1] }; } )
+            return Object.entries(this.oTaskDef)
+                .map( aA => aA[1] )
                 .sort( (oA, oB) => {
                     return oA.sName.localeCompare(oB.sName, 'fr', { numeric: true, sensitivity: 'base' } );
                 } );
@@ -44,12 +44,12 @@ module.exports = {
                     <span class="uk-form-icon" uk-icon="icon: search"></span>
                     <input class="uk-input" type="text" v-model="sSearch" @blur="resetSearch">
                 </div>
-                <ul v-if="aFilteredDefTask.length" class="uk-nav uk-dropdown-nav">
+                <ul class="uk-nav uk-dropdown-nav">
                     <li v-for="oCurrentDefTask in aFilteredDefTask" :key="oCurrentDefTask.nId">
                         <a href="#" @click="action('add-task', oCurrentDefTask.nId)">{{oCurrentDefTask.sName}}</a>
                     </li>
                 </ul>
-                <div v-else>
+                <div v-if="sSearch">
                     <a href="#" @click="action('add-def-task', sSearch)">Créer une nouvelle tâche</a>
                 </div>
             </div>

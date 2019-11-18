@@ -5,7 +5,15 @@ const
     
 let oVue = null;
 
-ES.initialize().then( () => {
+ES.initialize( {
+    modules: {
+        store: {
+            'task_def': null,
+            'task': null,
+            'chrono': null
+        }
+    }
+} ).then( () => {
 
     oVue = new Vue({
         el: '.ES-wrap',
@@ -19,9 +27,7 @@ ES.initialize().then( () => {
         
         data: {
             dDate: new Date(),
-            oDefTask: {
-                1: 'Pause'
-            }
+            oTaskDef: ES.store.task_def.get('oData')
         },
         
         mounted() {
@@ -41,15 +47,21 @@ ES.initialize().then( () => {
             },
 
             addDefTask(sName) {
-                const nId = Math.max.apply( Math, Object.keys(this.oDefTask) ) + 1,
-                    oDefTask = Object.assign({}, this.oDefTask);
+                const nId = ES.store.task_def.get('nAutoIncrement'),
+                    oTaskDef = Object.assign({}, this.oTaskDef);
     
-                oDefTask[nId] = sName;
-                this.oDefTask = oDefTask;
-            },
+                oTaskDef[nId] = {
+                    nId: nId,
+                    sName: sName.trim()
+                };
+                this.oTaskDef = oTaskDef;
 
-            editChrono(oChrono) {
-                console.log('Open Modal Chrono', oChrono);
+                ES.store.task_def.set({
+                    nAutoIncrement: nId + 1,
+                    oData: oTaskDef
+                });
+
+                this.$nextTick( () => this.$emit('task-control-button--add-task', nId) );
             }
         }
     } );

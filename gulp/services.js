@@ -11,7 +11,7 @@ module.exports = function(builds){
         serves = {
             exec() {
                 return childprocess.exec(
-                    `set NODE_ENV=${config.env.current}& npm start`,
+                    `set NODE_ENV=${config.env.current} & npm run start`,
                     (error, stdout, stderr) => {
                         if (error) {
                             console.error(error);

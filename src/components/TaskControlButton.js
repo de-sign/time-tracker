@@ -45,8 +45,15 @@ module.exports = {
                     <input class="uk-input" type="text" v-model="sSearch" @blur="resetSearch">
                 </div>
                 <ul class="uk-nav uk-dropdown-nav">
-                    <li v-for="oCurrentDefTask in aFilteredDefTask" :key="oCurrentDefTask.nId">
+                    <li
+                        v-for="oCurrentDefTask in aFilteredDefTask"
+                        :key="oCurrentDefTask.nId"
+                        class="uk-transition-toggle uk-position-relative"
+                    >
                         <a href="#" @click="action('add-task', oCurrentDefTask.nId)">{{oCurrentDefTask.sName}}</a>
+                        <a @click="action('remove-def-task', oCurrentDefTask.nId)" href="#" class="v-taskListItem__remove uk-transition-fade uk-position-center-right uk-text-danger">
+                            <span uk-icon="close"></span>
+                        </a>
                     </li>
                 </ul>
                 <div v-if="sSearch">

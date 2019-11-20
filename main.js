@@ -1,9 +1,2 @@
-const
-    env = process.env.NODE_ENV || 'development',
-    out = {
-        development: 'build',
-        testing: 'test',
-        production: 'dist'
-    };
-    
-require(`./${out[env]}/main`);
+const config = require('./gulp/config');
+require(`./${config.paths.dest.root}/main`);

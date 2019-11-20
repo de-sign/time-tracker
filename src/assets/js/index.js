@@ -7,11 +7,7 @@ let oVue = null;
 
 ES.initialize( {
     modules: {
-        store: {
-            'task_def': null,
-            'task': null,
-            'chrono': null
-        }
+        store: ['task_def', 'task', 'chrono']
     }
 } ).then( () => {
 
@@ -39,6 +35,7 @@ ES.initialize( {
                 this.$on('task-control-date-picker--prev', () => this.setDate(-1) );
                 this.$on('task-control-date-picker--next', () => this.setDate(1) );
                 this.$on('task-control-button--add-def-task', sName => this.addDefTask(sName) );
+                this.$on('task-control-button--remove-def-task', nId => this.removeDefTask(nId) );
             },
 
             setDate(nDayModify) {
@@ -62,6 +59,39 @@ ES.initialize( {
                 });
 
                 this.$nextTick( () => this.$emit('task-control-button--add-task', nId) );
+            },
+
+            removeDefTask(nId) {
+                const oTaskDef = Object.assign({}, this.oTaskDef);
+
+                UIkit.modal
+                    .confirm(
+                        `
+                            <h2 class="uk-modal-title">Supprimer un projet</h2>
+                            <p class="uk-text-danger">
+                                Êtes vous sûr de vouloir supprimer définitivement <u>${this.oTaskDef[nId].sName}</u> ainsi que toutes les tâches et tous les chronomètres qui lui sont assignés ?
+                            </p>
+                        `,
+                        {
+                            labels: {
+                                ok: 'Supprimer',
+                                cancel: 'Annuler'
+                            }
+                        }
+                    )
+                    .then(
+                        () => {
+                            const oData = ES.store.task.get('oData');
+                            let sDate, nIdTask;
+                            for( sDate in oData ){
+                                for( nIdTask in oData[sDate] ){
+                                    if( oData[sDate][nIdTask].nIdDefTask == nId ){
+                                        this.$emit('task-list-item--remove', nIdTask);
+                                    }
+                                }
+                            }
+                        }
+                    );
             }
         }
     } );

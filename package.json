@@ -1,16 +1,19 @@
 {
-  "name": "electron-starter",
-  "productName": "electron-starter",
+  "name": "time-tracker",
+  "productName": "Time tracker",
   "version": "1.0.0",
-  "description": "Electron application Starter pack",
+  "description": "Time tracker - Manage the investment time of your projects",
   "main": "main.js",
   "scripts": {
+    "gulp-dev": "set NODE_ENV=developpement & gulp",
+    "gulp-test": "set NODE_ENV=testing & gulp",
+    "gulp-prod": "set NODE_ENV=production & gulp builds",
+
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\"",
-    "rebuild": "electron-rebuild -f -w sqlite3"
+    "lint": "echo \"No linting configured\""
   },
   "keywords": [],
   "author": "b_joudot",
@@ -18,12 +21,7 @@
   "config": {
     "forge": {
       "packagerConfig": {},
-      "electronRebuildConfig": {
-        "extraModules": [
-          "sqlite3"
-        ],
-        "force": true
-      },
+      "electronRebuildConfig": {},
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -49,7 +47,8 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^5.1.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.45",

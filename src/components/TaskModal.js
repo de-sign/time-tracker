@@ -36,9 +36,9 @@ module.exports = {
             UIkit.modal
                 .confirm(
                     `
-                        <h2 class="uk-modal-title">Supprimer ${this.oChrono.sName}</h2>
+                        <h2 class="uk-modal-title">Supprimer un chronomètre</h2>
                         <p class="uk-text-danger">
-                            Êtes vous sûr de vouloir supprimer définitivement ${this.oChrono.sName} ?
+                            Êtes vous sûr de vouloir supprimer définitivement <u>${this.oChrono.sName}</u> ?
                         </p>
                     `,
                     {

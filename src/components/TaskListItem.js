@@ -80,7 +80,27 @@ module.exports = {
         },
 
         removeTask() {
-            this.$parent.$emit('task-list-item--remove', this.nId);
+            UIkit.modal
+                .confirm(
+                    `
+                        <h2 class="uk-modal-title">Supprimer une tâche</h2>
+                        <p class="uk-text-danger">
+                            Êtes vous sûr de vouloir supprimer définitivement <u>${this.sName}</u> et tous les chronomètres qui lui sont assignés ?
+                        </p>
+                    `,
+                    {
+                        labels: {
+                            ok: 'Supprimer',
+                            cancel: 'Annuler'
+                        }
+                    }
+                )
+                .then(
+                    () => {
+                        this.$root.$emit('task-list-item--remove', this.nId);
+                    }
+                );
+            
         }
     },
     

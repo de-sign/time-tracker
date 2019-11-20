@@ -28,7 +28,7 @@ module.exports = {
 
     mounted() {
         this.$root.$on('task-control-button--add-task', nId => this.add(nId));
-        this.$on('task-list-item--remove', nId => this.remove(nId));
+        this.$root.$on('task-list-item--remove', nId => this.remove(nId));
     },
     watch: {
         dDate(dNewDate, dOldDate) {
@@ -59,20 +59,33 @@ module.exports = {
         },
 
         remove(nId) {
-            const oTask = Object.assign({}, this.oTask),
-                oData = ES.store.chrono.get('oData');
-
-            delete oTask[nId];
-            delete oData[nId];
-            this.oTask = oTask;
-
+            const oDataTask = ES.store.task.get('oData'),
+            oDataChrono = ES.store.chrono.get('oData');
+            
+            let sDate, oTask = Object.assign({}, this.oTask);
+            
+            if( oTask[nId] ){
+                sDate = APP_getStringDate(this.dDate);
+                delete oTask[nId];
+                this.oTask = oTask;
+            } else {
+                for( sDate in oDataTask ){
+                    if( oDataTask[sDate][nId] ){
+                        oTask = oDataTask[sDate];
+                        delete oTask[nId];
+                        break;
+                    }
+                }
+            }
+            
             ES.store.task.set('oData', Object.assign(
-                ES.store.task.get('oData'), {
-                    [APP_getStringDate(this.dDate)]: this.oTask
+                oDataTask, {
+                    [sDate]: oTask
                 }
             ) );
 
-            ES.store.chrono.set('oData', oData);
+            delete oDataChrono[nId];
+            ES.store.chrono.set('oData', oDataChrono);
         }
     },
     

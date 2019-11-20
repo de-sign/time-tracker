@@ -1,11 +1,15 @@
-const imagemin = require('gulp-imagemin');
+const
+    imagemin = require('gulp-imagemin'),
+    path = require('path');
 
 // Data
-let env = process.env.NODE_ENV || 'development',
+
+let dir = path.basename(process.cwd()),
+    env = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development',
     out = {
         development: 'build',
-        testing: 'test',
-        production: 'dist'
+        testing: 'dist',
+        production: `../${dir}-dist`
     },
     src = {
         root: 'src',
@@ -29,6 +33,7 @@ Object.assign(exports, {
 
     paths: {
         src: Object.assign(src, {
+            package: `${src.root}/..`,
             html: `${src.pages}`,
             data: `${src.pages}/data`,
             scss: `${src.assets}/scss`,
@@ -37,6 +42,7 @@ Object.assign(exports, {
             fonts: `${src.assets}/fonts`
         }),
         dest: Object.assign(dest, {
+            package: `${dest.root}`,
             html: `${dest.root}`,
             scss: `${dest.assets}/css`,
             js: `${dest.root}`,
@@ -62,7 +68,8 @@ Object.assign(exports, {
             scss: '*.scss',
             js: '**/*.js',
             images: '**/*.*',
-            fonts: '**/*.*'
+            fonts: '**/*.*',
+            package: 'package.json'
         }
     },
 

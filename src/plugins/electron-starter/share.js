@@ -1,12 +1,6 @@
 const
-    Store = require('electron-store'),
-
-    env = process.env.NODE_ENV || 'development',
-    out = {
-        development: 'build',
-        testing: 'test',
-        production: 'dist'
-    };
+    path = require('path'),
+    Store = require('electron-store');
 
 module.exports = (electron) => {
 
@@ -14,13 +8,8 @@ module.exports = (electron) => {
     Object.assign(electron, {
 
         // Propreties
-        env: {
-            current: env,
-            root: `file://${process.cwd()}/${out[env]}`,
-            
-            isDevelopment: env == 'development',
-            isTesting: env == 'testing',
-            isProduction: env == 'production'
+        paths: {
+            root: 'file://' + path.join(__dirname, '../../')
         },
         
         // Methods
@@ -70,6 +59,18 @@ module.exports = (electron) => {
             oInstances: {},
 
             initialize(oOptions = {}) {
+                
+                if( typeof oOptions === 'string' ){
+                    oOptions = [oOptions];
+                }
+                if( Array.isArray(oOptions) ){
+                    let aOption = oOptions;
+                    oOptions = {};
+                    aOption.forEach( sName => {
+                        oOptions[sName] = null;
+                    } );
+                }
+
                 for( let sName in oOptions ){
                     this.create(sName, oOptions[sName]);
                 }

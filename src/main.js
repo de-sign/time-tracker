@@ -2,7 +2,7 @@ const
     ES = require(`./plugins/electron-starter/_`);
 
 ES.initialize( {
-    sUrl: ES.env.root + '/index.html',
+    sUrl: ES.paths.root + '/index.html',
     oWindowOptions: {
         width: 800,
         height: 600,
@@ -12,7 +12,8 @@ ES.initialize( {
         frame: false,
         show: false,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            // devTools: false
         }
     },
 

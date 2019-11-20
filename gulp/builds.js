@@ -26,6 +26,11 @@ const builds = {
     clean() {
         return del([config.paths.dest.root], { force: true });
     },
+
+    package() {
+        return gulp.src(config.paths.src.package + '/' + config.files.src.package)
+            .pipe(gulp.dest(config.paths.dest.package));
+    },
     
     html() {
         return gulp.src(config.paths.src.html + '/' + config.files.src.html)
@@ -75,7 +80,7 @@ const builds = {
 
 Object.assign(builds, {
     templates: builds.html,
-    scripts: builds.js,
+    scripts: gulp.parallel(builds.package, builds.js),
     styles: gulp.parallel(builds.scss, builds.images, builds.fonts)
 });
 builds.global = gulp.series(builds.clean, gulp.parallel(builds.templates, builds.scripts, builds.styles));

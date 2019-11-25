@@ -1,11 +1,11 @@
 {
   "name": "time-tracker",
   "productName": "Time tracker",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Time tracker - Manage the investment time of your projects",
   "main": "main.js",
   "scripts": {
-    "gulp-dev": "set NODE_ENV=developpement & gulp",
+    "gulp-dev": "set NODE_ENV=development & gulp",
     "gulp-test": "set NODE_ENV=testing & gulp",
     "gulp-prod": "set NODE_ENV=production & gulp builds",
 

@@ -9,7 +9,7 @@ module.exports = {
 
     props: {
         dDate: Date,
-        oTaskDef: Object
+        oProject: Object
     },
     
     template: `
@@ -20,7 +20,7 @@ module.exports = {
                         <task-control-date-picker :d-date="dDate"></task-control-date-picker>
                     </div>
                     <div class="uk-width-auto">
-                        <task-control-button :o-task-def="oTaskDef"></task-control-button>
+                        <task-control-button :o-project="oProject"></task-control-button>
                     </div>
                 </div>
             </div>

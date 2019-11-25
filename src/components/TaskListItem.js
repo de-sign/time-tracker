@@ -18,7 +18,7 @@ module.exports = {
     },
     data() {
         return {
-            oChrono: ES.store.chrono.get(`oData.${this.nId}`) || {}
+            oChrono: ES.store.chrono.select( ES.store.chrono.index('nIdTask', this.nId) )
         };
     },
     computed: {
@@ -37,41 +37,27 @@ module.exports = {
     },
     methods: {
         add(nHour) {
-            const nId = ES.store.chrono.get('nAutoIncrement'),
-                oChrono = Object.assign({}, this.oChrono),
-                dDate = new Date( this.dDate.getTime() );
-
+            const dDate = new Date( this.dDate.getTime() );
             dDate.setHours(nHour);
             dDate.setMinutes(0);
             dDate.setSeconds(0);
-
-            oChrono[nId] = {
-                nId: nId,
+            
+            const oAdd = ES.store.chrono.insert( {
                 nIdTask: this.nId,
-                sDate: dDate.toISOString()
-            };
-            this.oChrono = oChrono;
-
-            ES.store.chrono.set( {
-                nAutoIncrement: nId + 1,
-                oData: Object.assign(
-                    ES.store.chrono.get('oData'), {
-                        [this.nId]: this.oChrono
-                    }
-                )
+                sDate: APP_getStringDate(dDate),
+                sDatetime: dDate.toISOString()
             } );
+                
+            this.oChrono = Object.assign( {},
+                this.oChrono, {
+                    [oAdd._id]: oAdd
+                }
+            );
         },
 
         remove(nId) {
-            const oChrono = Object.assign({}, this.oChrono);
-            delete oChrono[nId];
-            this.oChrono = oChrono;
-
-            ES.store.chrono.set('oData', Object.assign(
-                ES.store.chrono.get('oData'), {
-                    [this.nId]: this.oChrono
-                }
-            ) );
+            ES.store.chrono.delete(nId);
+            this.oChrono = ES.store.chrono.select( ES.store.chrono.index('nIdTask', this.nId) );
         },
 
         update() {
@@ -125,13 +111,13 @@ module.exports = {
                 <div class="v-taskListItem__listChrono">
                     <task-list-item-chrono
                         v-for="oCurrentChrono in oChrono"
-                        :key="oCurrentChrono.nId"
+                        :key="oCurrentChrono._id"
 
                         :n-hour-start-ref="nHourStart"
 
-                        :n-id="oCurrentChrono.nId"
+                        :n-id="oCurrentChrono._id"
                         :n-id-task="oCurrentChrono.nIdTask"
-                        :s-date="oCurrentChrono.sDate"
+                        :s-datetime="oCurrentChrono.sDatetime"
                     ></task-list-item-part>
                 </div>
             </div>

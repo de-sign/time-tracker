@@ -19,28 +19,14 @@ ES.initialize( {
 
     modules: {
         store: {
-            task_def: {
-                defaults: {
-                    nAutoIncrement: 2,
-                    oData: {
-                        1: {
-                            nId: 1,
-                            sName: 'Pause'
-                        }
-                    }
-                }
+            project: {
+                _defaults: require('./plugins/defaults.js')
             },
             task: {
-                defaults: {
-                    nAutoIncrement: 1,
-                    oData: {}
-                }
+                _index: ['nIdProject', 'sDate']
             },
             chrono: {
-                defaults: {
-                    nAutoIncrement: 1,
-                    oData: {}
-                }
+                _index: ['nIdTask', 'sDate']
             }
         }
     }

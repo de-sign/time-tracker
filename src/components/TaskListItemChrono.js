@@ -5,10 +5,10 @@ module.exports = {
 
         nId: Number,
         nIdTask: Number,
-        sDate: String
+        sDatetime: String
     },
     data() {
-        const dDateInit = new Date(this.sDate),
+        const dDateInit = new Date(this.sDatetime),
             oData = Object.assign(
             {
                 sName: 'Chrono #' + this.nId,
@@ -17,13 +17,13 @@ module.exports = {
                 sTimeEnd: ( dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
                 bIsRunning: false
             },
-            ES.store.chrono.get(`oData.${this.nIdTask}.${this.nId}`)
+            ES.store.chrono.select(this.nId)
         );
         return oData;
     },
     computed: {
         dDateStart() {
-            const dDate = new Date(this.sDate),
+            const dDate = new Date(this.sDatetime),
                 aTimeStart = this.sTimeStart.split(':');
 
             dDate.setHours(aTimeStart[0]);
@@ -32,7 +32,7 @@ module.exports = {
         },
 
         dDateEnd() {
-            const dDate = new Date(this.sDate),
+            const dDate = new Date(this.sDatetime),
                 aTimeEnd = this.sTimeEnd.split(':');
 
             dDate.setHours(aTimeEnd[0]);
@@ -71,9 +71,8 @@ module.exports = {
     methods: {
 
         store() {
-            const oData = ES.store.chrono.get('oData');
-            Object.assign( oData[this.nIdTask][this.nId], this._data );
-            ES.store.chrono.set('oData', oData );
+            const oData = ES.store.chrono.select(this.nId);
+            ES.store.chrono.update(oData._id, Object.assign( oData, this._data, { nHoursElapsed: this.nHoursElapsed } ) );
         },
 
         edit() {

@@ -1,15 +1,15 @@
 const
     imagemin = require('gulp-imagemin'),
-    path = require('path');
+    path = require('path'),
+    fs = require('fs');
 
 // Data
-
-let dir = path.basename(process.cwd()),
+const package = JSON.parse( fs.readFileSync('package.json') ),
     env = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'development',
     out = {
         development: 'build',
         testing: 'dist',
-        production: `../${dir}-dist`
+        production: `../${package.name}-${package.version}`
     },
     src = {
         root: 'src',

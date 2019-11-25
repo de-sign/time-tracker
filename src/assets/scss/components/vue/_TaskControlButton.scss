@@ -1,2 +1,10 @@
 .v-taskControlButton {
+
+    &__add {
+        padding-right: $padding-padding !important;
+    }
+
+    &__remove {
+        padding: 5px !important;
+    }
 }

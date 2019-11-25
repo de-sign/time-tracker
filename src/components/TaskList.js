@@ -11,13 +11,13 @@ module.exports = {
 
     props: {
         dDate: Date,
-        oTaskDef: Object
+        oProject: Object
     },
     data() {
         return {
             nHourStart: 8,
             nHourEnd: 17,
-            oTask: ES.store.task.get(`oData.${APP_getStringDate(this.dDate)}`)
+            oTask: ES.store.task.select( ES.store.task.index('sDate', APP_getStringDate(this.dDate)) )
         };
     },
     computed: {
@@ -32,60 +32,32 @@ module.exports = {
     },
     watch: {
         dDate(dNewDate, dOldDate) {
-            this.oTask = ES.store.task.get(`oData.${APP_getStringDate(dNewDate)}`);
+            this.oTask = ES.store.task.select( ES.store.task.index('sDate', APP_getStringDate(dNewDate)) );
         }
     },
     methods: {
-        add(nIdDefTask) {
-            const nId = ES.store.task.get('nAutoIncrement'),
-                oTask = Object.assign({}, this.oTask);
-
-            oTask[nId] = {
-                nId: nId,
-                nIdDefTask: nIdDefTask,
-                sName: this.oTaskDef[nIdDefTask].sName,
-                sDate: this.dDate.toISOString()
-            };
-            this.oTask = oTask;
-
-            ES.store.task.set( {
-                nAutoIncrement: nId + 1,
-                oData: Object.assign(
-                    ES.store.task.get('oData'), {
-                        [APP_getStringDate(this.dDate)]: this.oTask
-                    }
-                )
+        add(nIdProject) {
+            const oAdd = ES.store.task.insert( {
+                nIdProject: nIdProject,
+                sName: this.oProject[nIdProject].sName,
+                sDatetime: this.dDate.toISOString(),
+                sDate: APP_getStringDate(this.dDate)
             } );
+                    
+            this.oTask = Object.assign( {},
+                this.oTask, {
+                    [oAdd._id]: oAdd
+                }
+            );
         },
 
         remove(nId) {
-            const oDataTask = ES.store.task.get('oData'),
-            oDataChrono = ES.store.chrono.get('oData');
-            
-            let sDate, oTask = Object.assign({}, this.oTask);
-            
-            if( oTask[nId] ){
-                sDate = APP_getStringDate(this.dDate);
-                delete oTask[nId];
-                this.oTask = oTask;
-            } else {
-                for( sDate in oDataTask ){
-                    if( oDataTask[sDate][nId] ){
-                        oTask = oDataTask[sDate];
-                        delete oTask[nId];
-                        break;
-                    }
-                }
+            ES.store.task.delete(nId);
+            if( this.oTask[nId] ){
+                this.oTask = ES.store.task.select( ES.store.task.index('sDate', APP_getStringDate(this.dDate)) );
             }
-            
-            ES.store.task.set('oData', Object.assign(
-                oDataTask, {
-                    [sDate]: oTask
-                }
-            ) );
 
-            delete oDataChrono[nId];
-            ES.store.chrono.set('oData', oDataChrono);
+            ES.store.chrono.delete( ES.store.chrono.index('nIdTask', nId) );
         }
     },
     
@@ -99,13 +71,13 @@ module.exports = {
 
                 --><task-list-item
                     v-for="oCurrentTask in oTask"
-                    :key="oCurrentTask.nId"
+                    :key="oCurrentTask._id"
 
                     :n-hour-start="nHourStart"
                     :n-hours-elapsed="nHoursElapsed"
                     :d-date="dDate"
                     
-                    :n-id="oCurrentTask.nId"
+                    :n-id="oCurrentTask._id"
                     :s-name="oCurrentTask.sName"
                 ></task-list-item> 
             </div>

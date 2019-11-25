@@ -5,3 +5,7 @@ $button-danger-hover-color: darken($button-danger-color, 20%);
 $button-danger-active-color: darken($button-danger-color, 30%);
 
 $dropdown-min-width: 250px;
+
+$panel-scrollable-height: auto;
+$panel-scrollable-padding: 0;
+$panel-scrollable-border: none;

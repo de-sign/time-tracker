@@ -7,7 +7,7 @@ let oVue = null;
 
 ES.initialize( {
     modules: {
-        store: ['task_def', 'task', 'chrono']
+        store: ['project', 'task', 'chrono']
     }
 } ).then( () => {
 
@@ -23,7 +23,7 @@ ES.initialize( {
         
         data: {
             dDate: new Date(),
-            oTaskDef: ES.store.task_def.get('oData')
+            oProject: ES.store.project.select()
         },
         
         mounted() {
@@ -44,32 +44,28 @@ ES.initialize( {
             },
 
             addDefTask(sName) {
-                const nId = ES.store.task_def.get('nAutoIncrement'),
-                    oTaskDef = Object.assign({}, this.oTaskDef);
-    
-                oTaskDef[nId] = {
-                    nId: nId,
+                const oAdd = ES.store.project.insert( {
                     sName: sName.trim()
-                };
-                this.oTaskDef = oTaskDef;
+                } );
+                    
+                this.oProject = Object.assign( {},
+                    this.oProject, {
+                        [oAdd._id]: oAdd
+                    }
+                );
 
-                ES.store.task_def.set({
-                    nAutoIncrement: nId + 1,
-                    oData: oTaskDef
-                });
-
-                this.$nextTick( () => this.$emit('task-control-button--add-task', nId) );
+                this.$nextTick( () => this.$emit('task-control-button--add-task', oAdd._id) );
             },
 
             removeDefTask(nId) {
-                const oTaskDef = Object.assign({}, this.oTaskDef);
+                const oProject = Object.assign({}, this.oProject);
 
                 UIkit.modal
                     .confirm(
                         `
                             <h2 class="uk-modal-title">Supprimer un projet</h2>
                             <p class="uk-text-danger">
-                                Êtes vous sûr de vouloir supprimer définitivement <u>${this.oTaskDef[nId].sName}</u> ainsi que toutes les tâches et tous les chronomètres qui lui sont assignés ?
+                                Êtes vous sûr de vouloir supprimer définitivement <u>${this.oProject[nId].sName}</u> ainsi que toutes les tâches et tous les chronomètres qui lui sont assignés ?
                             </p>
                         `,
                         {
@@ -81,15 +77,9 @@ ES.initialize( {
                     )
                     .then(
                         () => {
-                            const oData = ES.store.task.get('oData');
-                            let sDate, nIdTask;
-                            for( sDate in oData ){
-                                for( nIdTask in oData[sDate] ){
-                                    if( oData[sDate][nIdTask].nIdDefTask == nId ){
-                                        this.$emit('task-list-item--remove', nIdTask);
-                                    }
-                                }
-                            }
+                            ES.store.task
+                                .index('nIdProject', nId)
+                                .forEach( nIdTask => this.$emit('task-list-item--remove', nIdTask) );
                         }
                     );
             }

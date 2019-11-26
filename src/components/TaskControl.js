@@ -1,5 +1,3 @@
-let nUIdTask = 0;
-
 module.exports = {
 
     components: {

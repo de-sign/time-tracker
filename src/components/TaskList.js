@@ -78,6 +78,7 @@ module.exports = {
                     :d-date="dDate"
                     
                     :n-id="oCurrentTask._id"
+                    :n-id-project="oCurrentTask.nIdProject"
                     :s-name="oCurrentTask.sName"
                 ></task-list-item> 
             </div>

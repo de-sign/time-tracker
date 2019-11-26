@@ -1,5 +1,6 @@
 const
-    ES = require(`./plugins/electron-starter/_`);
+    ES = require('./plugins/electron-starter/core'),
+    config = require('./plugins/config');
 
 ES.initialize( {
     sUrl: ES.paths.root + '/index.html',
@@ -18,17 +19,7 @@ ES.initialize( {
     },
 
     modules: {
-        store: {
-            project: {
-                _defaults: require('./plugins/defaults.js')
-            },
-            task: {
-                _index: ['nIdProject', 'sDate']
-            },
-            chrono: {
-                _index: ['nIdTask', 'sDate']
-            }
-        }
+        store: config.store
     }
 } )
 .then( () => {

@@ -9,26 +9,25 @@
 
 /* components */
 @import
-	'components/vue/TaskControl',
+	'components/vue/MenuOpener',
 	'components/vue/TaskControlDatePicker',
 	'components/vue/TaskList',
 	'components/vue/TaskControlButton',
 	'components/vue/TaskListHeader',
 	'components/vue/TaskListItem',
-	'components/vue/TaskListItemChrono',
-	'components/vue/TaskModal';
+	'components/vue/TaskListItemChrono';
 
-/* pages */	
+/* pages */
 .ES-content > .uk-flex {
     height: 100%;
-    overflow: hidden;
-}
+	overflow: hidden;
+	
+	& > :first-child {
+		flex: 0 0 auto;
+	}
 
-.ES-content > .uk-flex > :first-child {
-    flex: 0 0 auto;
-}
-
-.ES-content > .uk-flex > :last-child {
-    flex: 1 1 100%;
-    overflow: auto;
+	& > :last-child {
+		flex: 1 1 100%;
+		overflow: auto;
+	}
 }

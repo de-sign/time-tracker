@@ -1,14 +1,13 @@
 {
   "name": "time-tracker",
-  "productName": "Time tracker",
+  "productName": "Time Tracker",
   "version": "2.0.0",
-  "description": "Time tracker - Manage the investment time of your projects",
+  "description": "Time Tracker - Manage the investment time of your projects",
   "main": "main.js",
   "scripts": {
     "gulp-dev": "set NODE_ENV=development & gulp",
     "gulp-test": "set NODE_ENV=testing & gulp",
     "gulp-prod": "set NODE_ENV=production & gulp builds",
-
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
@@ -48,7 +47,8 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
-    "electron-store": "^5.1.0"
+    "electron-store": "^5.1.0",
+    "excel4node": "^1.7.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.45",

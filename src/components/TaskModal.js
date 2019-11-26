@@ -10,12 +10,13 @@ module.exports = {
             sDescription: '',
             sTimeStart: '',
             sTimeEnd: '',
-            bIsRunning: false
+            bIsRunning: false,
+            bIsSupport: false
         };
     },
 
     mounted() {
-        this.hElement = document.getElementById('v-taskModal');
+        this.hElement = document.getElementsByClassName('v-taskModal')[0];
         this.$root.$on('task-list-item-chrono--edit', oChrono => this.open(oChrono));
     },
     methods: {
@@ -64,6 +65,7 @@ module.exports = {
             this.sTimeStart = oChrono.sTimeStart;
             this.sTimeEnd = oChrono.sTimeEnd;
             this.bIsRunning = oChrono.bIsRunning;
+            this.bIsSupport = oChrono.bIsSupport;
         },
 
         check() {
@@ -99,19 +101,27 @@ module.exports = {
     },
     
     template: `
-        <div id="v-taskModal" class="uk-flex-top" uk-modal>
+        <div class="v-taskModal uk-flex-top" uk-modal>
             <div class="uk-modal-dialog uk-margin-auto-vertical">
             <form>
                 <div class="uk-modal-body">
-                    <h2 class="uk-modal-title">Éditer un chrono</h2>
-                    <div class="uk-margin">
-                        <span class="uk-text-small uk-text-danger">{{oError.sName}}</span>
-                        <input v-model="sName" :class="{ 'uk-form-danger': oError.sName }" class="uk-input uk-h2" type="text" placeholder="Name">
+                    <h2 class="uk-modal-title">Éditer un chronomètre</h2>
+                    <div class="uk-grid-small uk-margin uk-flex-middle" uk-grid>
+                        <div class="uk-width-expand">
+                            <span class="uk-text-small uk-text-danger">{{oError.sName}}</span>
+                            <input v-model="sName" :class="{ 'uk-form-danger': oError.sName }" class="uk-input uk-h2" type="text" placeholder="Name">
+                        </div>
+                        <div class="uk-width-auto">
+                            <label class="uk-text-nowrap">
+                                <input class="uk-checkbox" type="checkbox" v-model="bIsSupport">
+                                Support
+                            </label>
+                        </div>
                     </div>
-                    <div class="uk-margin">
+                    <div class="uk-margin uk-hidden">
                         <textarea class="uk-textarea" rows="5" placeholder="Description de la tâche" v-model="sDescription"></textarea>
                     </div>
-                    <div class="uk-grid-small uk-flex-middle" uk-grid>
+                    <div class="uk-grid-small uk-margin uk-flex-middle" uk-grid>
                         <div class="uk-width-1-6">
                             Début
                         </div>

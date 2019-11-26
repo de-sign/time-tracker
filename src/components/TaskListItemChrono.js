@@ -4,22 +4,20 @@ module.exports = {
         nHourStartRef: Number,
 
         nId: Number,
-        nIdTask: Number,
         sDatetime: String
     },
     data() {
         const dDateInit = new Date(this.sDatetime),
-            oData = Object.assign(
-            {
-                sName: 'Chrono #' + this.nId,
-                sDescription: '',
-                sTimeStart: dDateInit.getHours().toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
-                sTimeEnd: ( dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
-                bIsRunning: false
-            },
-            ES.store.chrono.select(this.nId)
-        );
-        return oData;
+            oData = ES.store.chrono.select(this.nId);
+
+        return {
+            sName: oData.sName || 'Chrono #' + this.nId,
+            sDescription: oData.sDescription || '',
+            sTimeStart: oData.sTimeStart || dDateInit.getHours().toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
+            sTimeEnd: oData.sTimeEnd || ( dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
+            bIsRunning: oData.bIsRunning || false,
+            bIsSupport: oData.bIsSupport || false
+        };
     },
     computed: {
         dDateStart() {
@@ -84,6 +82,7 @@ module.exports = {
             this.sDescription = oValues.sDescription;
             this.sTimeStart = oValues.sTimeStart;
             this.bIsRunning = oValues.bIsRunning;
+            this.bIsSupport = oValues.bIsSupport;
             this.setTimeEnd(oValues.sTimeEnd);
             this.store();
         },
@@ -118,6 +117,7 @@ module.exports = {
             <header>
                 <h3 class="uk-h5 uk-margin-remove">{{sName}}</h3>
             </header>
+            <p v-if="bIsSupport" class="uk-text-meta">Support</p>
             <p class="uk-text-meta">{{sDescription}}</p>
         </article>
     `

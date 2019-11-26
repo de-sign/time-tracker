@@ -14,6 +14,7 @@ module.exports = {
         dDate: Date,
 
         nId: Number,
+        nIdProject: Number,
         sName: String
     },
     data() {
@@ -44,6 +45,7 @@ module.exports = {
             
             const oAdd = ES.store.chrono.insert( {
                 nIdTask: this.nId,
+                nIdProject: this.nIdProject,
                 sDate: APP_getStringDate(dDate),
                 sDatetime: dDate.toISOString()
             } );
@@ -116,7 +118,6 @@ module.exports = {
                         :n-hour-start-ref="nHourStart"
 
                         :n-id="oCurrentChrono._id"
-                        :n-id-task="oCurrentChrono.nIdTask"
                         :s-datetime="oCurrentChrono.sDatetime"
                     ></task-list-item-part>
                 </div>

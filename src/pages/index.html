@@ -7,16 +7,19 @@
 {% endblock %}
 
 {% block navbar_left %}
-    <div class="uk-padding-small uk-text-primary">
-        <span class="uk-margin-small-right" uk-icon="history"></span>
-        {{ES.meta.title}}
-    </div>
+    <menu-opener :s-window-title="sWindowTitle">{{ES.meta.title}}</menu-opener>
 {% endblock %}
 
 {% block content %}
-    <div class="uk-flex uk-flex-column">
-        <task-control :d-date="dDate" :o-project="oProject"></task-control>
-        <task-list :d-date="dDate" :o-project="oProject"></task-list>
-    </div>
+    <menu-offcanvas
+        :s-selected-menu="sSelectedMenu"
+        :o-menu="oMenu"
+    >
+        {{ES.meta.title}}
+    </menu-offcanvas>
+    <component
+        :is="sSelectedMenu"
+        :o-project="oProject"
+    ></component>
     <task-modal></task-modal>
 {% endblock %}

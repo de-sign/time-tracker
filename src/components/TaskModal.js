@@ -89,7 +89,7 @@ module.exports = {
                     bError = true;
                 }
 
-                else if( !oError.sTimeStart && parseInt(this.sTimeEnd.split(':').join()) <= parseInt(this.sTimeStart.split(':').join()) ){
+                else if( !oError.sTimeStart && parseInt(this.sTimeEnd.split(':').join('')) <= parseInt(this.sTimeStart.split(':').join('')) ){
                     oError.sTimeEnd = 'L\'heure de fin est inférieur à l\'heure de début';
                     bError = true;
                 }
@@ -118,7 +118,7 @@ module.exports = {
                             </label>
                         </div>
                     </div>
-                    <div class="uk-margin uk-hidden">
+                    <div class="uk-margin">
                         <textarea class="uk-textarea" rows="5" placeholder="Description de la tâche" v-model="sDescription"></textarea>
                     </div>
                     <div class="uk-grid-small uk-margin uk-flex-middle" uk-grid>

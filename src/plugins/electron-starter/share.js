@@ -7,7 +7,7 @@ module.exports = (electron) => {
 
         // Propreties
         paths: {
-            root: 'file://' + path.join(__dirname, '..', '..', '')
+            root: path.join(__dirname, '..', '..', '')
         },
         
         // Methods

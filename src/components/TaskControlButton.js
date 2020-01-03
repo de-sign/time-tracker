@@ -17,7 +17,8 @@ module.exports = {
                 } );
         },
         aFilteredProject() {
-            const rSearch = new RegExp(`(${this.sSearch})`, 'i');
+            const sEscapedSearch = this.sSearch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+                rSearch = new RegExp(`(${sEscapedSearch})`, 'i');
             return this.sSearch ?
                 this.aSortedProject
                     .filter( oA => rSearch.test(oA.sName) )
@@ -54,7 +55,7 @@ module.exports = {
                 <ul v-if="aFilteredProject.length" class="uk-nav uk-dropdown-nav uk-height-max-large uk-overflow-auto">
                     <li
                         v-for="oCurrentProject in aFilteredProject"
-                        :key="oCurrentProject.nId"
+                        :key="oCurrentProject._id"
                         class="uk-transition-toggle uk-position-relative"
                     >
                         <a @click="action('add-task', oCurrentProject._id)" href="#" class="v-taskControlButton__add" v-html="oCurrentProject.sName"></a>

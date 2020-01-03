@@ -8,7 +8,8 @@ module.exports = {
 
     props: {
         nId: Number,
-        sName: String
+        sName: String,
+        aFilterChrono: Array
     },
     data() {
         return {
@@ -25,8 +26,10 @@ module.exports = {
         };
     },
     computed: {
-        oSortedChrono() {
-            return Object.values(this.oChrono).sort( (oA, oB) => APP_getNumberDate(oA) - APP_getNumberDate(oB) );
+        aFilteredChrono() {
+            return Object.values(this.oChrono)
+                .filter(oChrono => this.aFilterChrono.includes(oChrono._id))
+                .sort( (oA, oB) => APP_getNumberDate(oA) - APP_getNumberDate(oB) )
         }
     },
     
@@ -42,7 +45,7 @@ module.exports = {
             </thead>
             <tbody>
                 <tr
-                    v-for="oCurrentChrono in oSortedChrono"
+                    v-for="oCurrentChrono in aFilteredChrono"
                     :key="oCurrentChrono._id"
                 >
                     <td v-for="oColumn in aColumn">

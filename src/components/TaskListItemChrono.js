@@ -20,6 +20,9 @@ module.exports = {
         };
     },
     computed: {
+        hDescription() {
+            return this.sDescription.replace(/\r\n|\n\r|\r|\n/g, '<br/>');
+        },
         dDateStart() {
             const dDate = new Date(this.sDatetime),
                 aTimeStart = this.sTimeStart.split(':');
@@ -118,7 +121,7 @@ module.exports = {
                 <h3 class="uk-h5 uk-margin-remove">{{sName}}</h3>
             </header>
             <p v-if="bIsSupport" class="uk-text-meta">Support</p>
-            <p class="uk-text-meta">{{sDescription}}</p>
+            <p class="uk-text-meta" v-html="hDescription"></p>
         </article>
     `
 };

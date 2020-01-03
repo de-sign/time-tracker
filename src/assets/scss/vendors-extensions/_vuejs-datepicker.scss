@@ -1,0 +1,22 @@
+.vdp-datepicker__calendar {
+    border: none !important;
+
+    .cell {
+        line-height: 35px !important;
+
+        &:not(.blank):not(.disabled) {
+            &.day:hover,
+            &.month:hover,
+            &.year:hover {
+                border-color: $button-primary-background !important;
+            }
+        }
+
+        &.selected,
+        &.selected:hover,
+        &.selected.highlighted {
+            background: $button-primary-background !important;
+            color: $button-primary-color !important;
+        }
+    }
+}

@@ -1,9 +1,10 @@
 const
+    path = require('path'),
     ES = require('./plugins/electron-starter/core'),
     config = require('./plugins/config');
 
 ES.initialize( {
-    sUrl: ES.paths.root + '/index.html',
+    sUrl: path.join('file:/', ES.paths.root, 'index.html'),
     oWindowOptions: {
         width: 800,
         height: 600,

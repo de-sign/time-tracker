@@ -24,16 +24,21 @@ module.exports = {
     },
 
     mounted() {
-        this.$root.$on('task-control-date-picker--prev', () => this.setDate(-1) );
-        this.$root.$on('task-control-date-picker--next', () => this.setDate(1) );
+        this.$root.$on('task-control--item-date-picker--prev', () => this.modifyDate(-1) );
+        this.$root.$on('task-control--item-date-picker--next', () => this.modifyDate(1) );
+        this.$root.$on('task-control--item-date-picker--set', sDate => this.setDate(sDate) );
         this.$root.$on('task-control-button--add-def-task', sName => this.addDefTask(sName) );
         this.$root.$on('task-control-button--remove-def-task', nId => this.removeDefTask(nId) );
     },
     methods: {
 
-        setDate(nDayModify) {
+        modifyDate(nDayModify) {
             this.dDate.setDate( this.dDate.getDate() + nDayModify );
-            this.dDate = new Date(this.dDate.getTime());
+            this.setDate( this.dDate.getTime() );
+        },
+
+        setDate(uDate) {
+            this.dDate = new Date(uDate);
         },
 
         addDefTask(sName) {

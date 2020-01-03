@@ -9,13 +9,14 @@
 
 /* components */
 @import
+	'components/vue/ItemDatePicker',
 	'components/vue/MenuOpener',
-	'components/vue/TaskControlDatePicker',
-	'components/vue/TaskList',
 	'components/vue/TaskControlButton',
+	'components/vue/TaskList',
 	'components/vue/TaskListHeader',
 	'components/vue/TaskListItem',
-	'components/vue/TaskListItemChrono';
+	'components/vue/TaskListItemChrono',
+	'components/vue/TaskModal';
 
 /* pages */
 .ES-content > .uk-flex {

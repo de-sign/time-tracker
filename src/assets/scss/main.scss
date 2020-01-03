@@ -11,6 +11,10 @@
 @import
 	'node_modules/uikit/src/scss/uikit-theme';
 
+/* vendors extensions */
+@import
+	'vendors-extensions/vuejs-datepicker';
+
 /* base */
 @import
 	'base/typography';

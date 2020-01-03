@@ -9,17 +9,12 @@ module.exports = {
     },
 
     props: {
-        oProject: Object
-    },
-    computed: {
-        aSortedProject() {
-            return Object.values(this.oProject)
-                .sort( (oA, oB) => oA.sName.localeCompare(oB.sName, 'fr', { numeric: true, sensitivity: 'base' }) );
-        },
-        aFilteredProject() {
-            return this.aSortedProject
-                .filter( oA => ES.store.chrono.index('nIdProject', oA._id).length );
-        }
+        oProject: Object,
+        aSortedProject: Array,
+        aFilteredProject: Array,
+        aFilterChrono: Array,
+        dDateStart: Date,
+        dDateEnd: Date
     },
 
     mounted(){
@@ -35,7 +30,10 @@ module.exports = {
 
             // Sheet User
             this.aFilteredProject.forEach( oProject => {
-                [].push.apply( aId, ES.store.chrono.index('nIdProject', oProject._id) );
+                [].push.apply( aId, ES.store.chrono
+                    .index('nIdProject', oProject._id)
+                    .filter(nId => this.aFilterChrono.includes(nId))
+                );
             } );
 
             Object.values( ES.store.chrono.select(aId) )
@@ -62,13 +60,12 @@ module.exports = {
                 defaultPath: path.join(ES.remote.app.getPath('documents'), oXlsx._options.cwd, oXlsx._options.name),
             } ).then( oReturn => {
                 !oReturn.canceled && oXlsx.write( oReturn.filePath );
-            } )
-            
+            } );
         }
     },
     
     template: `
-        <main class="v-summaryList">
+        <main class="v-summaryList uk-section uk-section-small">
             <div class="uk-container uk-container-small">
                 <summary-list-item
                     v-for="oCurrentProject in aFilteredProject"
@@ -76,6 +73,7 @@ module.exports = {
                     
                     :n-id="oCurrentProject._id"
                     :s-name="oCurrentProject.sName"
+                    :a-filter-chrono="aFilterChrono"
                 ></summary-list-item> 
             </div>
         </main>

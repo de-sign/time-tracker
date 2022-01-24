@@ -2,9 +2,12 @@
 
     &__add {
         padding-right: $padding-padding !important;
+        display: block !important;
     }
 
     &__remove {
         padding: 5px !important;
+        display: flex;
+        cursor: pointer;
     }
 }

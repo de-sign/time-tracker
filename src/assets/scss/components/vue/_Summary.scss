@@ -1,0 +1,6 @@
+.v-summary {
+
+    & > *:last-child {
+        z-index: 0;
+    }
+}

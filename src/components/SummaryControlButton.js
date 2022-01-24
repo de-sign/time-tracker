@@ -19,11 +19,14 @@ module.exports = {
     
     template: `
         <div class="v-taskControlButton uk-inline uk-text-right">
-            <button v-show="aPossibleProject.length" class="uk-button uk-button-default" >
+            <button
+                class="uk-button uk-button-default"
+                :disabled="!aPossibleProject.length"
+            >
                 Filtrer
                 <span class="uk-visible@s">les tâches</span>
             </button>
-            <div class="uk-text-left" uk-dropdown="pos: bottom-right">
+            <div v-if="aPossibleProject.length" class="uk-text-left" uk-dropdown="pos: bottom-right">
                 <ul class="uk-nav uk-dropdown-nav uk-height-max-large uk-overflow-auto">
                     <li
                         v-for="oCurrentProject in aPossibleProject"
@@ -40,10 +43,12 @@ module.exports = {
                     </li>
                 </ul>
             </div>
+            <!--
             <button @click="exportXLSX" class="uk-button uk-button-primary">
                 Exporter
                 <span class="uk-visible@s">en XLSX</span>
             </button>
+            -->
         </div>
     `
 };

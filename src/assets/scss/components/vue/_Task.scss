@@ -1,0 +1,6 @@
+.v-task {
+
+    & > *:last-child {
+        z-index: 0;
+    }
+}

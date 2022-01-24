@@ -7,19 +7,28 @@
 {% endblock %}
 
 {% block navbar_left %}
-    <menu-opener :s-window-title="sWindowTitle">{{ES.meta.title}}</menu-opener>
-{% endblock %}
-
-{% block content %}
-    <menu-offcanvas
+    {# OffCanvas deleted
+        <menu-opener :s-window-title="sWindowTitle">{{ES.meta.title}}</menu-opener>
+    #}
+    <menu-tab
         :s-selected-menu="sSelectedMenu"
         :o-menu="oMenu"
     >
         {{ES.meta.title}}
-    </menu-offcanvas>
+    </menu-tab>
+{% endblock %}
+
+{% block content %}
+    {# OffCanvas deleted
+        <menu-offcanvas
+            :s-selected-menu="sSelectedMenu"
+            :o-menu="oMenu"
+        >
+            {{ES.meta.title}}
+        </menu-offcanvas>
+    #}
     <component
         :is="sSelectedMenu"
-        :o-project="oProject"
     ></component>
     <task-modal></task-modal>
 {% endblock %}

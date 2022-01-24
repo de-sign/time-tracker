@@ -46,7 +46,6 @@ module.exports = {
                     oSheet.appendRow( [
                         oChrono.sDate.split('-').splice(0, 2).join('-'), // YYYY-MM
                         this.oProject[ oChrono.nIdProject ].sName, // Task
-                        this.bIsSupport ? 'Support' : null, // Flag
                         nTpsHH || null, // HH
                         nTpsMM || null, // MM
                         `IF( D${oSheet._row} * 60 + E${oSheet._row} = 0, "", D${oSheet._row} * 60 + E${oSheet._row})`, // Tot MM
@@ -65,7 +64,7 @@ module.exports = {
     },
     
     template: `
-        <main class="v-summaryList uk-section uk-section-small">
+        <main class="v-summaryList uk-section uk-section-small uk-overflow-auto uk-position-relative uk-background-muted">
             <div class="uk-container uk-container-small">
                 <summary-list-item
                     v-for="oCurrentProject in aFilteredProject"

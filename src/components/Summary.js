@@ -8,10 +8,7 @@ module.exports = {
         'summary-control': require('./SummaryControl'),
         'summary-list': require('./SummaryList')
     },
-
-    props: {
-        oProject: Object
-    },
+    
     data() {
         const dLastYear = new Date();
         dLastYear.setFullYear( dLastYear.getFullYear() - 1 );
@@ -20,7 +17,8 @@ module.exports = {
             dDateEnd: new Date(),
             oCheckedProject: {},
             oChrono: ES.store.chrono.select(),
-            oIndexedId: ES.store.chrono.index('sDate')
+            oIndexedId: ES.store.chrono.index('sDate'),
+            oProject: ES.store.project.select()
         };
     },
     computed: {
@@ -78,7 +76,7 @@ module.exports = {
     },
 
     template: `
-        <section class="v-sumary uk-flex uk-flex-column">
+        <section class="v-sumary uk-flex uk-flex-column uk-height-1-1">
             <summary-control
                 :a-possible-project="aPossibleProject"
                 :o-checked-project="oCheckedProject"

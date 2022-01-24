@@ -5,13 +5,13 @@ module.exports = {
     },
     data() {
         return {
-            sSearch: ''
+            sSearch: '',
+            oRemove: {}
         };
     },
     computed: {
         aSortedProject() {
-            return Object.entries(this.oProject)
-                .map( aA => aA[1] )
+            return Object.values(this.oProject)
                 .sort( (oA, oB) => {
                     return oA.sName.localeCompare(oB.sName, 'fr', { numeric: true, sensitivity: 'base' } );
                 } );
@@ -23,7 +23,7 @@ module.exports = {
                 this.aSortedProject
                     .filter( oA => rSearch.test(oA.sName) )
                     .map( oA => Object.assign( {}, oA, {
-                        sName: oA.sName.replace(rSearch, '<mark>$1</mark>')
+                        sName: oA.sName.replace(rSearch, '<mark class="uk-margin-remove">$1</mark>')
                     } ) ) :
                 [...this.aSortedProject];
         }
@@ -31,7 +31,17 @@ module.exports = {
 
     methods: {
         resetSearch() {
-            setTimeout( () => this.sSearch = '', 800 );
+            setTimeout( () => this.sSearch = '', 1000800 );
+        },
+
+        remove(nIdProject) {
+            this.oRemove[nIdProject] = true;
+            this.oRemove = Object.assign({}, this.oRemove);
+
+            setTimeout( () => {
+                delete this.oRemove[nIdProject];
+                this.oRemove = Object.assign({}, this.oRemove);
+            }, 2000 );
         },
 
         action(sAction, uArgs) {
@@ -58,13 +68,27 @@ module.exports = {
                         :key="oCurrentProject._id"
                         class="uk-transition-toggle uk-position-relative"
                     >
-                        <a @click="action('add-task', oCurrentProject._id)" href="#" class="v-taskControlButton__add" v-html="oCurrentProject.sName"></a>
                         <a
+                            @click="action('add-task', oCurrentProject._id)"
                             href="#"
-                            @click="action('remove-def-task', oCurrentProject._id)"
-                            class="v-taskControlButton__remove uk-transition-fade uk-position-center-right uk-text-danger uk-padding-small"
+                            class="v-taskControlButton__add"
+                            v-html="oCurrentProject.sName"
+                        ></a>
+                        <span
+                            v-show="!oRemove[oCurrentProject._id]"
+                            @click="remove(oCurrentProject._id)"
+                            class="v-taskControlButton__remove uk-transition-fade uk-position-center-right uk-text-danger uk-flex"
                         >
                             <span uk-icon="close"></span>
+                        </span>
+                        <a
+                            href="#"
+                            v-show="oRemove[oCurrentProject._id]"
+                            @click="action('remove-def-task', oCurrentProject._id)"
+                            class="v-taskControlButton__remove uk-position-center-right uk-text-danger"
+                            title="Sure ?!"
+                        >
+                            <span uk-icon="ban"></span>
                         </a>
                     </li>
                 </ul>

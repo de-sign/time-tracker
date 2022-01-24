@@ -17,8 +17,8 @@ module.exports = {
     },
     
     template: `
-        <header class="v-taskControl uk-section uk-section-small">
-            <div class="uk-container uk-container-small">
+        <header class="v-taskControl uk-section uk-section-small uk-flex-none uk-background-default uk-box-shadow-small uk-position-relative uk-position-z-index">
+            <div class="uk-container uk-container-expand">
                 <div class="uk-grid-small uk-flex-middle" uk-grid>
                     <div class="uk-width-expand">
                         <item-date-picker

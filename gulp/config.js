@@ -1,5 +1,5 @@
+// import imagemin from 'gulp-imagemin';
 const
-    imagemin = require('gulp-imagemin'),
     path = require('path'),
     fs = require('fs');
 
@@ -85,6 +85,7 @@ Object.assign(exports, {
         },
         cleancss: undefined,
         htmlmin: undefined,
+        /*
         imagemin: [
             imagemin.gifsicle({ interlaced: true }),
             imagemin.jpegtran({ progressive: true }),
@@ -99,6 +100,7 @@ Object.assign(exports, {
                 ]
             })
         ],
+        */
         plumber: undefined,
         sass: undefined,
         sourcemaps: {

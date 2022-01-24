@@ -19,7 +19,10 @@ module.exports = {
     },
     data() {
         return {
-            oChrono: ES.store.chrono.select( ES.store.chrono.index('nIdTask', this.nId) )
+            oChrono: this.nId ? 
+                ES.store.chrono.select( ES.store.chrono.index('nIdTask', this.nId) ) :
+                {},
+            bRemove: false
         };
     },
     computed: {
@@ -33,21 +36,30 @@ module.exports = {
     },
 
     mounted() {
+        this.$root.$on('task-list-item-chrono--add', (nId, nHour) => this.nId == nId && this.add(nHour) );
         this.$on('task-list-item-chrono--remove', nId => this.remove(nId));
         this.$nextTick( () => this.update() );
     },
     methods: {
+        action(sAction, uArg) {
+            this[ sAction ](uArg);
+        },
+
         add(nHour) {
             const dDate = new Date( this.dDate.getTime() );
-            dDate.setHours(nHour);
-            dDate.setMinutes(0);
+            if( nHour ){
+                dDate.setHours(nHour);
+                dDate.setMinutes(0);
+            }
             dDate.setSeconds(0);
             
             const oAdd = ES.store.chrono.insert( {
                 nIdTask: this.nId,
                 nIdProject: this.nIdProject,
                 sDate: APP_getStringDate(dDate),
-                sDatetime: dDate.toISOString()
+                sDatetime: dDate.toISOString(),
+                bIsRunning: !nHour,
+                sTimeEnd: nHour ? null : dDate.getHours().toString().padStart(2, '0') + ':' + dDate.getMinutes().toString().padStart(2, '0')
             } );
                 
             this.oChrono = Object.assign( {},
@@ -67,43 +79,63 @@ module.exports = {
             setTimeout( () => this.update(), 120000 );
         },
 
+        addTask(nHour) {
+            this.$root.$emit('task-control-button--add-task', this.nIdProject, nHour);
+        },
+
         removeTask() {
-            UIkit.modal
-                .confirm(
-                    `
-                        <h2 class="uk-modal-title">Supprimer une tâche</h2>
-                        <p class="uk-text-danger">
-                            Êtes vous sûr de vouloir supprimer définitivement <u>${this.sName}</u> et tous les chronomètres qui lui sont assignés ?
-                        </p>
-                    `,
-                    {
-                        labels: {
-                            ok: 'Supprimer',
-                            cancel: 'Annuler'
-                        }
-                    }
-                )
-                .then(
-                    () => {
-                        this.$root.$emit('task-list-item--remove', this.nId);
-                    }
-                );
-            
+            if( this.bRemove || !ES.store.chrono.index('nIdTask', this.nId).length ){
+                this.$root.$emit('task-list-item--remove', this.nId);
+            } else {
+                this.bRemove = true;
+                setTimeout( () => {
+                    this.bRemove = false;
+                }, 2000 );
+            }
         }
     },
     
     template: `
-        <article class="v-taskListItem v-taskListColumn uk-margin-right">
-            <header class="v-taskListItem__header uk-padding-small uk-padding-small uk-background-default uk-transition-toggle">
+        <article
+            class="v-taskListItem v-taskListColumn uk-margin-right"
+            :class="{ '--suggest': !nId }"
+        >
+            <header class="v-taskListItem__header uk-padding-small uk-padding-small uk-background-muted uk-transition-toggle">
                 <h2 class="uk-h5 uk-margin-remove uk-text-normal uk-text-center uk-text-truncate" :title="sName">{{sName}}</h2>
-                <a @click="removeTask()" href="#" class="v-taskListItem__remove uk-transition-fade uk-position-center-right uk-text-danger">
-                    <span uk-icon="close"></span>
-                </a>
+                <span
+                    class="uk-transition-fade uk-position-center-right"
+                >
+                    <a @click="action(nId ? 'add' : 'addTask', false)" href="#" class="v-taskListItem__add uk-text-primary">
+                        <span uk-icon="clock"></span>
+                    </a>
+                    <a
+                        v-if="nId"
+                        @click="removeTask()"
+                        :title="bRemove ? 'Sure ?!' : ''"
+                        href="#"
+                        class="v-taskListItem__remove uk-text-danger"
+                    >
+                        <span :uk-icon="bRemove ? 'ban' : 'close'"></span>
+                    </a>
+                    <a
+                        v-else
+                        @click="action('addTask')"
+                        href="#"
+                        class="v-taskListItem__add uk-text-primary"
+                    >
+                        <span uk-icon="plus"></span>
+                    </a>
+                </span>
             </header>
             <div class="v-taskListItem__content uk-position-relative">
                 <div class="v-taskListItem__listHour">
                     <div v-for="nHour in aHour" class="v-taskListColumn__row uk-position-relative uk-padding-small uk-transition-toggle">
-                        <a @click="add(nHour)" href="#" class="v-taskListItem__add uk-transition-fade uk-overlay-default uk-position-cover">
+                        <a
+                            v-if="nId"
+                            @click="action(nId ? 'add' : 'addTask', nHour)"
+                            href="#"
+                            class="v-taskListItem__add uk-transition-fade uk-position-cover"
+                        >
                             <span class="uk-position-center">
                                 <span uk-icon="plus"></span>
                             </span>

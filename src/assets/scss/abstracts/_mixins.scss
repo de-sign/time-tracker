@@ -1,3 +1,31 @@
-@mixin hook-button-danger(){ border: $button-border-width solid $button-danger-color; }
-@mixin hook-button-danger-hover(){ border-color: $button-danger-hover-color; }
-@mixin hook-button-danger-active(){ border-color: $button-danger-active-color; }
+// hook-button
+@mixin hook-button-danger(){
+    border: $button-border-width solid $button-danger-color;
+    &.ES-active {
+        background-color: $global-danger-background;
+        color: $global-inverse-color !important;
+    }
+}
+@mixin hook-button-danger-hover(){
+    border-color: $button-danger-hover-color;
+    &.ES-active {
+        border-color: darken($global-danger-background, 10%);
+        background-color: darken($global-danger-background, 10%);
+    }
+}
+@mixin hook-button-danger-active(){
+    border-color: $button-danger-active-color;
+    &.ES-active {
+        border-color: darken($global-danger-background, 20%);
+        background-color: darken($global-danger-background, 20%);
+    }
+}
+
+// hook-navbar
+@mixin hook-navbar-nav-item(){
+    border-top: $global-border-width solid transparent;
+}
+@mixin hook-navbar-nav-item-active(){
+    background-color: $global-background;
+    border-top: $global-border-width solid $global-primary-background;
+}

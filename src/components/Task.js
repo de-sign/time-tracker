@@ -1,5 +1,5 @@
 function APP_getStringDate(dDate) {
-    return dDate.getFullYear() + '-' + dDate.getMonth().toString().padStart(2, '0') + '-' + dDate.getDate().toString().padStart(2, '0');
+    return dDate.getFullYear() + '-' + (dDate.getMonth() + 1).toString().padStart(2, '0') + '-' + dDate.getDate().toString().padStart(2, '0');
 }
 
 module.exports = {
@@ -8,13 +8,11 @@ module.exports = {
         'task-control': require('./TaskControl'),
         'task-list': require('./TaskList'),
     },
-
-    props: {
-        oProject: Object
-    },
+    
     data() {
         return {
-            dDate: new Date()
+            dDate: new Date(),
+            oProject: ES.store.project.select()
         };
     },
     computed: {
@@ -56,39 +54,21 @@ module.exports = {
         },
 
         removeDefTask(nId) {
-            const oProject = Object.assign({}, this.oProject);
+            
+            delete this.oProject[nId];
+            this.oProject = Object.assign({}, this.oProject);
 
-            UIkit.modal
-                .confirm(
-                    `
-                        <h2 class="uk-modal-title">Supprimer un projet</h2>
-                        <p class="uk-text-danger">
-                            Êtes vous sûr de vouloir supprimer définitivement <u>${this.oProject[nId].sName}</u> ainsi que toutes les tâches et tous les chronomètres qui lui sont assignés ?
-                        </p>
-                    `,
-                    {
-                        labels: {
-                            ok: 'Supprimer',
-                            cancel: 'Annuler'
-                        }
-                    }
-                )
-                .then(
-                    () => {
-                        ES.store.task
-                            .index('nIdProject', nId)
-                            .forEach( nIdTask => this.$root.$emit('task-list-item--remove', nIdTask) );
-                    }
-                );
+            ES.store.project.delete(nId);
+            ES.store.task
+                .index('nIdProject', nId)
+                .forEach( nIdTask => this.$root.$emit('task-list-item--remove', nIdTask) );
         }
     },
     
     template: `
-        <section class="v-task">
-            <div class="uk-flex uk-flex-column">
-                <task-control :d-date="dDate" :o-project="oProject"></task-control>
-                <task-list :d-date="dDate" :o-project="oProject"></task-list>
-            </div>
+        <section class="v-task uk-flex uk-flex-column uk-height-1-1">
+            <task-control :d-date="dDate" :o-project="oProject"></task-control>
+            <task-list :d-date="dDate" :o-project="oProject"></task-list>
         </section>
     `
 };

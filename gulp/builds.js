@@ -1,4 +1,5 @@
 // Require
+// import imagemin from 'gulp-imagemin';
 const
     del           = require('del'),
     fs            = require('fs'),
@@ -13,11 +14,10 @@ const
     data          = require('gulp-data'),
     htmlmin       = require('gulp-htmlmin'),
     gulpif        = require('gulp-if'),
-    imagemin      = require('gulp-imagemin'),
     nunjucks      = require('gulp-nunjucks'),
     plumber       = require('gulp-plumber'),
     rename        = require('gulp-rename'),
-    sass          = require('gulp-sass'),
+    sass          = require('gulp-sass')(require('sass')),
     sourcemaps    = require('gulp-sourcemaps'),
     terserjs      = require('gulp-terser-js');
 
@@ -68,7 +68,7 @@ const builds = {
     
     images() {
         return gulp.src(config.paths.src.images + '/' + config.files.src.images)
-            .pipe(imagemin(config.plugins.imagemin))
+            // .pipe(imagemin(config.plugins.imagemin))
             .pipe(gulp.dest(config.paths.dest.images));
     },
     

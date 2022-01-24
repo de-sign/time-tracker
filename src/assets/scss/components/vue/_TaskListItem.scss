@@ -1,10 +1,18 @@
 .v-taskListItem {
 
+    &.--suggest {
+        opacity: 0.5;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+
     &__header {
         position: sticky;
         top: 0;
         z-index: $global-z-index - 20;
-        box-shadow: 20px 0px 0 0 $global-background, 0 1px 0 0 $global-border;
+        box-shadow: 20px 0px 0 0 $global-muted-background, 0 1px 0 0 $global-border;
 
         & h5 {
             line-height: inherit;

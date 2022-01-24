@@ -16,8 +16,11 @@ ES.initialize( {
         el: '.ES-wrap',
         
         components: {
+            /* OffCanvas deleted
             'menu-offcanvas': require('./components/MenuOffcanvas'),
             'menu-opener': require('./components/MenuOpener'),
+            */
+            'menu-tab': require('./components/MenuTab'),
             'summary-tab': require('./components/Summary'),
             'task-modal': require('./components/TaskModal'),
             'task-tab': require('./components/Task'),
@@ -29,8 +32,7 @@ ES.initialize( {
                 'task-tab': { sCode: 'task-tab', sLabel: 'Saisie', sIcon: 'calendar', },
                 'summary-tab': { sCode: 'summary-tab', sLabel: 'Récapitulatif', sIcon: 'history' }
             },
-            sSelectedMenu: 'task-tab',
-            oProject: ES.store.project.select()
+            sSelectedMenu: 'task-tab'
         },
         computed: {
             sWindowTitle() {

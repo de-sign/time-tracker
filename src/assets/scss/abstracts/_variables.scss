@@ -1,4 +1,4 @@
-$global-danger-background : #f0506e;
+$global-danger-background: #f0506e;
 $global-z-index: 1000;
 
 $button-danger-background: transparent;
@@ -8,4 +8,5 @@ $button-danger-active-color: darken($button-danger-color, 30%);
 
 $dropdown-min-width: 250px;
 
-$offcanvas-z-index: $global-z-index + 200;
+$global-margin: 20px;
+$navbar-nav-item-height: $global-margin * 2;

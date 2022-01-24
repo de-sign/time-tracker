@@ -25,7 +25,7 @@ module.exports = {
     },
     
     template: `
-        <span class="v-itemDatePicker uk-margin-small-left">
+        <span class="v-itemDatePicker">
             <a v-if="bArrow" href="#" uk-icon="chevron-left" @click="$emit('action', 'prev')"></a>
             <a v-if="bArrow" href="#" uk-icon="chevron-right" @click="$emit('action', 'next')"></a>
             <a href="#" class="uk-margin-small-right" uk-icon="calendar"></a>

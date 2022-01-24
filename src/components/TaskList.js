@@ -1,5 +1,5 @@
 function APP_getStringDate(dDate) {
-    return dDate.getFullYear() + '-' + dDate.getMonth().toString().padStart(2, '0') + '-' + dDate.getDate().toString().padStart(2, '0');
+    return dDate.getFullYear() + '-' + (dDate.getMonth() + 1).toString().padStart(2, '0') + '-' + dDate.getDate().toString().padStart(2, '0');
 }
 
 module.exports = {
@@ -15,19 +15,59 @@ module.exports = {
     },
     data() {
         return {
-            nHourStart: 8,
-            nHourEnd: 17,
+            nHourStart: 7,
+            nHourEnd: 20,
+            nDateRange: 11,
             oTask: ES.store.task.select( ES.store.task.index('sDate', APP_getStringDate(this.dDate)) )
         };
     },
     computed: {
         nHoursElapsed() {
             return this.nHourEnd - this.nHourStart;
+        },
+
+        aPossibleTask() {
+            const aTask = Object.values(this.oTask),
+                aPossibleTask = [],
+                oIdProject = {},
+                dRange = new Date( this.dDate ),
+                nMid = Math.floor(this.nDateRange / 2);
+
+            aTask.forEach( oTask => {
+                oIdProject[ oTask.nIdProject ] = true;
+            } );
+
+            dRange.setDate( dRange.getDate() - nMid );
+            for( let nIndex = 0; nIndex < this.nDateRange; nIndex++ ){
+                if( nIndex != nMid ){
+                    const oDateTask = ES.store.task.select( ES.store.task.index('sDate', APP_getStringDate(dRange)) );
+                    Object.values(oDateTask).forEach( oTask => {
+                        if( !oIdProject[oTask.nIdProject] ){
+                            oIdProject[oTask.nIdProject] = true;
+                            aPossibleTask.push( {
+                                nIdProject: oTask.nIdProject,
+                                sName: oTask.sName
+                            } );
+                        }
+                    } );
+                }
+                dRange.setDate( dRange.getDate() + 1 );
+            }
+
+            aPossibleTask.sort( (oA, oB) => oA.sName.localeCompare(oB.sName, 'fr', { numeric: true, sensitivity: 'base' }) );
+            Array.prototype.unshift.apply(aPossibleTask, aTask);
+
+            return aPossibleTask;
         }
     },
 
     mounted() {
-        this.$root.$on('task-control-button--add-task', nId => this.add(nId));
+        this.$root.$on('task-control-button--add-task', (nIdProject, nHour) => {
+            const nIdTask = this.add(nIdProject);
+            nHour == null || this.$nextTick( () => {
+                this.$root.$emit('task-list-item-chrono--add', nIdTask, nHour);
+            } );
+        } );
         this.$root.$on('task-list-item--remove', nId => this.remove(nId));
     },
     watch: {
@@ -49,6 +89,8 @@ module.exports = {
                     [oAdd._id]: oAdd
                 }
             );
+
+            return oAdd._id;
         },
 
         remove(nId) {
@@ -62,15 +104,15 @@ module.exports = {
     },
     
     template: `
-        <main>
-            <div class="uk-container uk-container-small uk-text-nowrap">
+        <main class="uk-flex-auto uk-overflow-auto uk-position-relative uk-background-muted">
+            <div class="uk-container uk-container-expand uk-text-nowrap uk-margin-top">
                 <task-list-header
                     :n-hour-start="nHourStart"
                     :n-hours-elapsed="nHoursElapsed"
                 ></task-list-header><!--
 
                 --><task-list-item
-                    v-for="oCurrentTask in oTask"
+                    v-for="oCurrentTask in aPossibleTask"
                     :key="oCurrentTask._id"
 
                     :n-hour-start="nHourStart"

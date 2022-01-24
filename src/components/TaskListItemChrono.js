@@ -16,7 +16,8 @@ module.exports = {
             sTimeStart: oData.sTimeStart || dDateInit.getHours().toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
             sTimeEnd: oData.sTimeEnd || ( dDateInit.getHours() + 1 ).toString().padStart(2, '0') + ':' + dDateInit.getMinutes().toString().padStart(2, '0'),
             bIsRunning: oData.bIsRunning || false,
-            bIsSupport: oData.bIsSupport || false
+
+            bRemove: false
         };
     },
     computed: {
@@ -43,7 +44,7 @@ module.exports = {
 
         nHoursElapsed() {
             const dDiff = this.dDateEnd - this.dDateStart;
-            return dDiff / 3600000;
+            return Math.round( (dDiff / 3600000) * 100 ) / 100;
         },
 
         oPosition() {
@@ -52,7 +53,7 @@ module.exports = {
 
             return {
                 top: (150 * nCoefTop + 5) + 'px',
-                height: (150 * this.nHoursElapsed - 9) + 'px',
+                height: Math.max(56, 150 * this.nHoursElapsed - 9) + 'px',
                 left: '5px',
                 right: '5px',
                 zIndex: ( 15 * nCoefTop + 800 )
@@ -60,7 +61,7 @@ module.exports = {
         },
 
         sTitle() {
-            const sTitle = `<b>${this.sName}</b><br/>Début - ${this.sTimeStart}<br/> Fin - ${this.sTimeEnd}`;
+            const sTitle = `<b>${this.sName}</b><br/>Début - ${this.sTimeStart}<br/> Fin - ${this.bIsRunning ? 'En cours' : this.sTimeEnd}`;
             return sTitle.replace(/:/g, 'h');
         }
     },
@@ -80,12 +81,16 @@ module.exports = {
             this.$root.$emit('task-list-item-chrono--edit', this);
         },
 
+        changeRunning(){
+            this.bIsRunning = !this.bIsRunning;
+            this.update();
+        },
+
         set(oValues) {
             this.sName = oValues.sName;
             this.sDescription = oValues.sDescription;
             this.sTimeStart = oValues.sTimeStart;
             this.bIsRunning = oValues.bIsRunning;
-            this.bIsSupport = oValues.bIsSupport;
             this.setTimeEnd(oValues.sTimeEnd);
             this.store();
         },
@@ -105,7 +110,14 @@ module.exports = {
         },
 
         remove() {
-            this.$parent.$emit('task-list-item-chrono--remove', this.nId);
+            if( this.bRemove ){
+                this.$parent.$emit('task-list-item-chrono--remove', this.nId);
+            } else {
+                this.bRemove = true;
+                setTimeout( () => {
+                    this.bRemove = false;
+                }, 2000 );
+            }
         }
     },
     
@@ -115,12 +127,25 @@ module.exports = {
             :uk-tooltip="'pos: right; title: ' + sTitle"
             :style="oPosition"
             :class="{ '--isRunning': bIsRunning }"
-            class="v-taskListItemChrono uk-position-absolute uk-tile uk-padding-small"
+            class="v-taskListItemChrono uk-position-absolute uk-tile uk-padding-small uk-transition-toggle"
         >
             <header>
                 <h3 class="uk-h5 uk-margin-remove">{{sName}}</h3>
+                <span class="uk-transition-fade uk-position-top-right uk-padding-small">
+                    <a @click="changeRunning()" href="#" class="v-taskListItem__add uk-text-primary">
+                        <span v-show="!bIsRunning" uk-icon="play-circle"></span><!--
+                        --><span v-show="bIsRunning" uk-icon="clock"></span>
+                    </a>
+                    <a
+                        @click="remove()"
+                        :title="bRemove ? 'Sure ?!' : ''"
+                        href="#"
+                        class="v-taskListItem__remove uk-text-danger"
+                    >
+                        <span :uk-icon="bRemove ? 'ban' : 'close'""></span>
+                    </a>
+                </span>
             </header>
-            <p v-if="bIsSupport" class="uk-text-meta">Support</p>
             <p class="uk-text-meta" v-html="hDescription"></p>
         </article>
     `

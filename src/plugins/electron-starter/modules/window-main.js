@@ -21,8 +21,11 @@ module.exports = (ES) => {
             if( !this[sName] ){
                 this[sName] = new ES.BrowserWindow(oOptions);
                 this.oIdMap[sName] = this[sName].id;
+                
                 sUrl && this[sName].loadURL(sUrl);
                 this[sName].on('closed', () => this.destroy(sName));
+                ES.remote.enable(this[sName].webContents);
+                
                 this.update();
                 return this.oInstances[sName] = this[sName];
             }
@@ -32,6 +35,7 @@ module.exports = (ES) => {
             if( !this[sName] ){
                 this[sName] = this.oInstances[sName] = ES.BrowserWindow.fromId(nId);
                 this.oIdMap[sName] = nId;
+                ES.remote.enable(this[sName].webContents);
                 this.update();
             }
         },

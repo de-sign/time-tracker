@@ -15,6 +15,9 @@ module.exports = function(electron){
         initialize(oOptions = {}) {
             const aPromises = [];
 
+            // Gestion de .remote suite à Electron 14.0
+            ES.remote = require('@electron/remote');
+
             // INIT des Modules
             aPromises.push( ES.modules.initialize(oOptions.modules) );
 

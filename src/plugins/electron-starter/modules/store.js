@@ -117,6 +117,9 @@ module.exports = (ES) => {
                         let uValue = oData._id[nId][sIndex];
                         if( oData[sIndex][uValue] && oData[sIndex][uValue].includes(nId) ){
                             oData[sIndex][uValue].splice( oData[sIndex][uValue].indexOf(nId), 1);
+                            if( !oData[sIndex][uValue].length ){
+                                delete oData[sIndex][uValue];
+                            }
                         }
 
                         if( !bDelete ){
@@ -159,6 +162,9 @@ module.exports = (ES) => {
         // Methods
         initialize(oOptions = {}) {
             
+            // Gestion de .remote suite à Electron 14.0
+            ES.ipcMain && Store.initRenderer();
+
             if( typeof oOptions === 'string' ){
                 oOptions = [oOptions];
             }

@@ -57,7 +57,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "del": "^6.0.0",
-    "electron": "^16.0.7",
+    "electron": "^18.3.7",
     "electron-rebuild": "^3.2.7",
     "electron-store": "^8.0.1",
     "excel4node": "^1.7.2",
